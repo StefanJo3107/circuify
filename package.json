@@ -34,6 +34,7 @@
     ]
   },
   "devDependencies": {
+    "@iconify/icons-ant-design": "^1.0.8",
     "@iconify/icons-wpf": "^1.0.5",
     "@iconify/react": "^1.1.3"
   }

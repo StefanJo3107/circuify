@@ -4,42 +4,45 @@ import Dropdown from "react-bootstrap/Dropdown";
 import Col from "react-bootstrap/Col";
 import { Icon, InlineIcon } from "@iconify/react";
 import integratedCircuit from "@iconify/icons-wpf/integrated-circuit";
+import githubFilled from "@iconify/icons-ant-design/github-filled";
+import twitterCircleFilled from "@iconify/icons-ant-design/twitter-circle-filled";
+import redditCircleFilled from "@iconify/icons-ant-design/reddit-circle-filled";
 
-class NavTitle extends React.Component {
-    render() {
-        return (
-            <BNavbar.Brand className="px-3" href="#">
-                <Icon className="mr-2" icon={integratedCircuit} width="20" />
-                <span className="Title">Circuify</span>
-            </BNavbar.Brand>
-        );
-    }
+function NavTitle(props) {
+    return (
+        <BNavbar.Brand className="px-3" href="#">
+            <Icon className="mr-2" icon={integratedCircuit} width="25" />
+            <span className="Title">Circuify</span>
+        </BNavbar.Brand>
+    );
 }
 
-class NavOption extends React.Component {
-    render() {
-        return (
-            <Dropdown className="mr-2">
-                <Dropdown.Toggle
-                    variant="secondary"
-                    style={{ backgroundColor: "transparent", border: 0 }}
-                    id="dropdown-basic"
-                >
-                    {this.props.name}
-                </Dropdown.Toggle>
+function IconLink(props) {
+    return (
+        <a className="mr-2" href={props.redirect} target="_blank">
+            <Icon icon={props.source} width="30" color="white" />
+        </a>
+    );
+}
 
-                <Dropdown.Menu>
-                    <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
-                    <Dropdown.Item href="#/action-2">
-                        Another action
-                    </Dropdown.Item>
-                    <Dropdown.Item href="#/action-3">
-                        Something else
-                    </Dropdown.Item>
-                </Dropdown.Menu>
-            </Dropdown>
-        );
-    }
+function NavOption(props) {
+    return (
+        <Dropdown className="mr-2">
+            <Dropdown.Toggle
+                variant="secondary"
+                style={{ backgroundColor: "transparent", border: 0 }}
+                id="dropdown-basic"
+            >
+                {props.name}
+            </Dropdown.Toggle>
+
+            <Dropdown.Menu>
+                <Dropdown.Item href="#/action-1">Action</Dropdown.Item>
+                <Dropdown.Item href="#/action-2">Another action</Dropdown.Item>
+                <Dropdown.Item href="#/action-3">Something else</Dropdown.Item>
+            </Dropdown.Menu>
+        </Dropdown>
+    );
 }
 
 export default class Navbar extends React.Component {
@@ -58,6 +61,20 @@ export default class Navbar extends React.Component {
                 <NavOption name="View" />
                 <NavOption name="Run" />
                 <NavOption name="Help" />
+                <div className="ml-auto">
+                    <IconLink
+                        redirect="https://github.com/StefanJo3107"
+                        source={githubFilled}
+                    />
+                    <IconLink
+                        redirect="https://twitter.com/SJovGD"
+                        source={twitterCircleFilled}
+                    />
+                    <IconLink
+                        redirect="https://www.reddit.com/user/sjovanovic3107"
+                        source={redditCircleFilled}
+                    />
+                </div>
             </BNavbar>
         );
     }
