@@ -1,5 +1,6 @@
 import React from "react";
 import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
 import logo from "./logo.svg";
 import "./App.css";
@@ -8,14 +9,18 @@ import Sidebar from "./Sidebar.jsx";
 
 function App() {
     return (
-        <div>
+        <>
             <Navbar />
             <Container fluid>
                 <Row>
                     <Sidebar />
+                    <div
+                        className="col-md-9 ml-sm-auto px-0 col-lg-10"
+                        id="canvasHolder"
+                    ></div>
                 </Row>
             </Container>
-        </div>
+        </>
     );
 }
 
