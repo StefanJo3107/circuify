@@ -1,8 +1,6 @@
 import React from "react";
 import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
-import logo from "./logo.svg";
 import "./App.css";
 import Navbar from "./Navbar.jsx";
 import Sidebar from "./Sidebar.jsx";

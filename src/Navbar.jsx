@@ -2,7 +2,7 @@ import React from "react";
 import BNavbar from "react-bootstrap/Navbar";
 import Dropdown from "react-bootstrap/Dropdown";
 import Col from "react-bootstrap/Col";
-import { Icon, InlineIcon } from "@iconify/react";
+import { Icon } from "@iconify/react";
 import integratedCircuit from "@iconify/icons-wpf/integrated-circuit";
 import githubFilled from "@iconify/icons-ant-design/github-filled";
 import twitterCircleFilled from "@iconify/icons-ant-design/twitter-circle-filled";
@@ -19,7 +19,12 @@ function NavTitle(props) {
 
 function IconLink(props) {
     return (
-        <a className="mr-2" href={props.redirect} target="_blank">
+        <a
+            className="mr-2"
+            href={props.redirect}
+            target="_blank"
+            rel="noopener noreferrer"
+        >
             <Icon icon={props.source} width="30" color="white" />
         </a>
     );

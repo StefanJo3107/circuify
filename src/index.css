@@ -21,6 +21,22 @@ body {
     overflow-y: auto;
 }
 
+.btnOutline {
+    box-shadow: 0 0 0 0.2rem rgba(130, 138, 145, 0.5) !important;
+}
+
+.btnOutline:focus {
+    box-shadow: 0 0 0 0.2rem rgba(130, 138, 145, 0.5) !important;
+}
+
+.btnNoOutline {
+    box-shadow: 0 0 0 0rem rgba(130, 138, 145, 0.5) !important;
+}
+
+.btnNoOutline:focus {
+    box-shadow: 0 0 0 0rem rgba(130, 138, 145, 0.5) !important;
+}
+
 canvas {
     position: absolute;
 }
@@ -42,4 +58,9 @@ canvas {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
     background: #777;
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #f1f1f1 #888;
 }

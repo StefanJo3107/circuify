@@ -6,9 +6,54 @@ import Figure from "react-bootstrap/Figure";
 
 import _ from "lodash";
 
-import { Icon, InlineIcon } from "@iconify/react";
+import { Icon } from "@iconify/react";
 import arrowsExpand from "@iconify/icons-bi/arrows-expand";
 import arrowsCollapse from "@iconify/icons-bi/arrows-collapse";
+
+export let selectedOption = "SELECT";
+
+function SidebarOption(props) {
+    return (
+        <Button
+            className={
+                props.name === selectedOption
+                    ? "btnOutline border-0"
+                    : "btnNoOutline border-0"
+            }
+            variant="secondary"
+            style={{ backgroundColor: "transparent" }}
+            onClick={props.onClick}
+        >
+            <Figure>
+                <Figure.Image
+                    src={props.image}
+                    style={{ width: "52px" }}
+                    alt={props.name}
+                />
+                <Figure.Caption className="text-center">
+                    {props.name}
+                </Figure.Caption>
+            </Figure>
+        </Button>
+    );
+}
+
+function SidebarOptions(props) {
+    return props.menuChunks.map((chunk, index) => (
+        <div key={index} className="d-flex justify-content-around">
+            {chunk.map((item, index) => (
+                <SidebarOption
+                    key={index}
+                    name={item.name}
+                    image={item.image}
+                    onClick={() => {
+                        props.onClick(item.name);
+                    }}
+                />
+            ))}
+        </div>
+    ));
+}
 
 function CollapsableMenu(props) {
     const [open, setOpen] = useState(props.isOpen);
@@ -17,29 +62,6 @@ function CollapsableMenu(props) {
         props.menuItems,
         Math.ceil(props.menuItems.length / 3)
     );
-
-    const menuItems = menuChunks.map((chunk, index) => (
-        <div key={index} className="d-flex justify-content-around">
-            {chunk.map((item, index) => (
-                <Button
-                    key={index}
-                    variant="secondary"
-                    style={{ backgroundColor: "transparent", border: 0 }}
-                >
-                    <Figure>
-                        <Figure.Image
-                            src={item.image}
-                            width={60}
-                            alt={item.name}
-                        />
-                        <Figure.Caption className="text-center">
-                            {item.name}
-                        </Figure.Caption>
-                    </Figure>
-                </Button>
-            ))}
-        </div>
-    ));
 
     return (
         <>
@@ -60,7 +82,12 @@ function CollapsableMenu(props) {
             </Button>
             <Collapse in={open}>
                 <div id="collapse-content" className="mt-2 mb-2 px-2">
-                    {menuItems}
+                    <SidebarOptions
+                        menuChunks={menuChunks}
+                        onClick={(name) => {
+                            props.onClick(name);
+                        }}
+                    />
                 </div>
             </Collapse>
         </>
@@ -68,12 +95,24 @@ function CollapsableMenu(props) {
 }
 
 export default class Sidebar extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { refresh: false };
+    }
+
     render() {
+        const tools = [
+            {
+                image: "../Images/Cursor.png",
+                name: "SELECT",
+            },
+        ];
+
         const gates = [
             {
                 image:
                     "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Buffer_ANSI.svg/150px-Buffer_ANSI.svg.png",
-                name: "Buffer",
+                name: "BUFFER",
             },
             {
                 image:
@@ -119,18 +158,27 @@ export default class Sidebar extends React.Component {
                         <ul className="nav flex-column">
                             <CollapsableMenu
                                 isOpen={true}
-                                menuName="Logic Gates"
+                                menuName="Tools"
+                                menuItems={tools}
+                                onClick={(name) => SetSelection(name, this)}
+                            />
+                            <CollapsableMenu
+                                isOpen={true}
+                                menuName="Inputs"
                                 menuItems={gates}
+                                onClick={(name) => SetSelection(name, this)}
                             />
                             <CollapsableMenu
                                 isOpen={true}
                                 menuName="Logic Gates"
                                 menuItems={gates}
+                                onClick={(name) => SetSelection(name, this)}
                             />
                             <CollapsableMenu
                                 isOpen={true}
-                                menuName="Logic Gates"
+                                menuName="Outputs"
                                 menuItems={gates}
+                                onClick={(name) => SetSelection(name, this)}
                             />
                         </ul>
                     </div>
@@ -138,4 +186,11 @@ export default class Sidebar extends React.Component {
             </>
         );
     }
+}
+
+function SetSelection(name, obj) {
+    selectedOption = name;
+    obj.setState({
+        refresh: !obj.state.refresh,
+    });
 }
