@@ -2,7 +2,7 @@ let cellSize = 18;
 let grid;
 
 let placingElement = null;
-
+let slider;
 let elements;
 
 function setup() {
@@ -23,7 +23,7 @@ function RefreshCanvas() {
     background(248);
     grid.show();
 
-    if (placingElement != null) {
+    if (placingElement != null && mouseInsideBounds()) {
         placingElement.show(
             grid.snapToGrid(createVector(mouseX, mouseY)),
             cellSize,
@@ -33,16 +33,16 @@ function RefreshCanvas() {
 
     if (elements != null) {
         for (let i = 0; i < elements.length; i++) {
+            elements[i].refreshPosition();
             elements[i].showPlaced(cellSize);
         }
     }
 }
 
 function mousePressed() {
-    if (placingElement != null) {
-        placingElement.setPosition(
-            grid.snapToGrid(createVector(mouseX, mouseY))
-        );
+    if (placingElement != null && mouseInsideBounds()) {
+        let pos = grid.snapToGrid(createVector(mouseX, mouseY));
+        placingElement.setPosition(pos, grid.posToCell(pos));
         elements.push(placingElement);
         placingElement = null;
     }

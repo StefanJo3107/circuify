@@ -26,7 +26,12 @@ class Element {
         this.show(this.position, cellSize, true);
     }
 
-    setPosition(pos) {
+    setPosition(pos, cell) {
         this.position = pos;
+        this.cell = cell;
+    }
+
+    refreshPosition() {
+        this.position = grid.cellToPos(this.cell);
     }
 }

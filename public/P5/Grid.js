@@ -16,8 +16,16 @@ class Grid {
 
     snapToGrid(pos) {
         return createVector(
-            floor(pos.x / cellSize) * cellSize,
-            floor(pos.y / cellSize) * cellSize
+            round(pos.x / cellSize) * cellSize,
+            round(pos.y / cellSize) * cellSize
         );
+    }
+
+    posToCell(pos) {
+        return createVector(round(pos.x / cellSize), round(pos.y / cellSize));
+    }
+
+    cellToPos(cell) {
+        return createVector(cell.x * cellSize, cell.y * cellSize);
     }
 }
