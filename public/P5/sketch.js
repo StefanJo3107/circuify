@@ -1,26 +1,50 @@
-let cellSize = 15;
-
+let cellSize = 18;
 let grid;
+
+let placingElement = null;
+
+let elements;
 
 function setup() {
     let holder = document.getElementById("canvasHolder");
     let canvas = createCanvas(holder.offsetWidth, windowHeight - 50, P2D);
     canvas.parent("canvasHolder");
 
-    grid = new Grid(cellSize, 220);
-
-    background(248);
-    grid.show();
+    grid = new Grid(220);
+    elements = [];
+    placingElement = new And();
 }
 
 function draw() {
+    RefreshCanvas();
+}
+
+function RefreshCanvas() {
     background(248);
     grid.show();
 
-    if (mouseInsideBounds()) {
-        let v = grid.snapToGrid(createVector(mouseX, mouseY));
-        fill(0, 255, 0);
-        rect(v.x, v.y, cellSize * 2, cellSize * 3);
+    if (placingElement != null) {
+        placingElement.show(
+            grid.snapToGrid(createVector(mouseX, mouseY)),
+            cellSize,
+            false
+        );
+    }
+
+    if (elements != null) {
+        for (let i = 0; i < elements.length; i++) {
+            elements[i].showPlaced(cellSize);
+        }
+    }
+}
+
+function mousePressed() {
+    if (placingElement != null) {
+        placingElement.setPosition(
+            grid.snapToGrid(createVector(mouseX, mouseY))
+        );
+        elements.push(placingElement);
+        placingElement = null;
     }
 }
 

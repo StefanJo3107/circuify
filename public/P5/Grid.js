@@ -1,16 +1,15 @@
 class Grid {
-    constructor(cellSize, strokeColor) {
-        this.cellSize = cellSize;
+    constructor(strokeColor) {
         this.strokeColor = strokeColor;
     }
 
     show() {
         stroke(this.strokeColor);
-        for (let i = 0; i < width; i += this.cellSize) {
+        for (let i = 0; i < width; i += cellSize) {
             line(i, 0, i, height);
         }
 
-        for (let i = 0; i < height; i += this.cellSize) {
+        for (let i = 0; i < height; i += cellSize) {
             line(0, i, width, i);
         }
     }

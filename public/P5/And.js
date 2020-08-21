@@ -1,0 +1,69 @@
+class And extends Element {
+    constructor() {
+        super(4, 2, 2, 2);
+        this.inputs = [new Input(false), new Input(false)];
+        this.output = new Output(false);
+    }
+
+    show(pos, cellSize, placed) {
+        super.setColor(placed);
+        line(
+            pos.x,
+            pos.y + cellSize / 2,
+            pos.x + cellSize,
+            pos.y + cellSize / 2
+        );
+        line(
+            pos.x,
+            pos.y + (3 * cellSize) / 2,
+            pos.x + cellSize,
+            pos.y + (3 * cellSize) / 2
+        );
+
+        line(
+            pos.x + 3 * cellSize,
+            pos.y + cellSize,
+            pos.x + 4 * cellSize,
+            pos.y + cellSize
+        );
+
+        this.inputs[0].show(
+            createVector(pos.x, pos.y + cellSize / 2),
+            cellSize / 2,
+            cellSize,
+            placed
+        );
+
+        this.inputs[1].show(
+            createVector(pos.x, pos.y + (3 * cellSize) / 2),
+            cellSize / 2,
+            cellSize,
+            placed
+        );
+
+        this.output.show(
+            createVector(pos.x + 4 * cellSize, pos.y + cellSize),
+            cellSize / 2,
+            cellSize,
+            placed
+        );
+
+        beginShape();
+        vertex(pos.x + cellSize, pos.y);
+        vertex(pos.x + 2 * cellSize, pos.y);
+        bezierVertex(
+            pos.x + 3.2 * cellSize,
+            pos.y,
+            pos.x + 3.2 * cellSize,
+            pos.y + 2 * cellSize,
+            pos.x + 2 * cellSize,
+            pos.y + 2 * cellSize
+        );
+        vertex(pos.x + cellSize, pos.y + 2 * cellSize);
+        endShape(CLOSE);
+    }
+
+    calculateOutput() {
+        this.output.state = this.inputs[0].state && this.inputs[1].state;
+    }
+}

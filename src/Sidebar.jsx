@@ -10,13 +10,17 @@ import { Icon } from "@iconify/react";
 import arrowsExpand from "@iconify/icons-bi/arrows-expand";
 import arrowsCollapse from "@iconify/icons-bi/arrows-collapse";
 
-export let selectedOption = "SELECT";
+export let selectedOption = { option: "SELECT", type: "TOOL" };
+
+SidebarOption.defaultProps = {
+    imageWidth: 52,
+};
 
 function SidebarOption(props) {
     return (
         <Button
             className={
-                props.name === selectedOption
+                props.name === selectedOption.option
                     ? "btnOutline border-0"
                     : "btnNoOutline border-0"
             }
@@ -27,7 +31,7 @@ function SidebarOption(props) {
             <Figure>
                 <Figure.Image
                     src={props.image}
-                    style={{ width: "52px" }}
+                    width={props.imageWidth}
                     alt={props.name}
                 />
                 <Figure.Caption className="text-center">
@@ -46,6 +50,7 @@ function SidebarOptions(props) {
                     key={index}
                     name={item.name}
                     image={item.image}
+                    imageWidth={props.imageWidth}
                     onClick={() => {
                         props.onClick(item.name);
                     }}
@@ -84,6 +89,7 @@ function CollapsableMenu(props) {
                 <div id="collapse-content" className="mt-2 mb-2 px-2">
                     <SidebarOptions
                         menuChunks={menuChunks}
+                        imageWidth={props.imageWidth}
                         onClick={(name) => {
                             props.onClick(name);
                         }}
@@ -159,26 +165,36 @@ export default class Sidebar extends React.Component {
                             <CollapsableMenu
                                 isOpen={true}
                                 menuName="Tools"
+                                type="TOOL"
                                 menuItems={tools}
-                                onClick={(name) => SetSelection(name, this)}
+                                onClick={(name) =>
+                                    SetSelection(name, "TOOL", this)
+                                }
+                                imageWidth={40}
                             />
                             <CollapsableMenu
                                 isOpen={true}
                                 menuName="Inputs"
                                 menuItems={gates}
-                                onClick={(name) => SetSelection(name, this)}
+                                onClick={(name) =>
+                                    SetSelection(name, "INPUT", this)
+                                }
                             />
                             <CollapsableMenu
                                 isOpen={true}
                                 menuName="Logic Gates"
                                 menuItems={gates}
-                                onClick={(name) => SetSelection(name, this)}
+                                onClick={(name) =>
+                                    SetSelection(name, "GATE", this)
+                                }
                             />
                             <CollapsableMenu
                                 isOpen={true}
                                 menuName="Outputs"
                                 menuItems={gates}
-                                onClick={(name) => SetSelection(name, this)}
+                                onClick={(name) =>
+                                    SetSelection(name, "OUTPUT", this)
+                                }
                             />
                         </ul>
                     </div>
@@ -188,8 +204,10 @@ export default class Sidebar extends React.Component {
     }
 }
 
-function SetSelection(name, obj) {
-    selectedOption = name;
+function SetSelection(optionName, optionType, obj) {
+    selectedOption = { option: optionName, type: optionType };
+    sessionStorage.setItem("selectedOption", optionName);
+    sessionStorage.setItem("selectedType", optionType);
     obj.setState({
         refresh: !obj.state.refresh,
     });
