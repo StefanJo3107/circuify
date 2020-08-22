@@ -28,6 +28,7 @@ function RefreshCanvas() {
     grid.show();
 
     getPlacingElement();
+    placeElement();
 
     if (placingElement != null && mouseInsideBounds()) {
         placingElement.show(
@@ -63,16 +64,18 @@ function getPlacingElement() {
     }
 }
 
-function mousePressed() {
-    if (placingElement != null && mouseInsideBounds()) {
-        let pos = grid.snapToGrid(createVector(mouseX, mouseY));
-        placingElement.setPosition(pos, grid.posToCell(pos));
-        let clone = Object.assign(
-            Object.create(Object.getPrototypeOf(placingElement)),
-            placingElement
-        );
-        elements.push(clone);
-        placingElement = null;
+function placeElement() {
+    if (mouseIsPressed && mouseButton === LEFT) {
+        if (placingElement != null && mouseInsideBounds()) {
+            let pos = grid.snapToGrid(createVector(mouseX, mouseY));
+            placingElement.setPosition(pos, grid.posToCell(pos));
+            let clone = Object.assign(
+                Object.create(Object.getPrototypeOf(placingElement)),
+                placingElement
+            );
+            elements.push(clone);
+            placingElement = null;
+        }
     }
 }
 
@@ -97,6 +100,18 @@ function DrawGrid() {
     for (let i = 0; i < height; i += cellSize) {
         line(0, i, width, i);
     }
+}
+
+function mouseWheel(event) {
+    let delta = event.delta;
+    if (delta > 0) {
+        delta = -1;
+    } else if (delta < 0) {
+        delta = 1;
+    }
+
+    cellSize += delta;
+    cellSize = constrain(cellSize, 10, 30);
 }
 
 String.prototype.toTitleCase = function () {

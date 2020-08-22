@@ -85,6 +85,6 @@ class Xor extends Element {
     }
 
     calculateOutput() {
-        this.output.state = this.inputs[0].state != this.inputs[1].state;
+        this.output.setState(this.inputs[0].state != this.inputs[1].state);
     }
 }

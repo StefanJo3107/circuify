@@ -46,6 +46,6 @@ class Not extends Element {
     }
 
     calculateOutput() {
-        this.output.state = !this.input.state;
+        this.output.setState(!this.input.state);
     }
 }

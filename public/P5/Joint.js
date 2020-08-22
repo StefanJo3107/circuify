@@ -18,6 +18,8 @@ class Joint {
         if (clickable && this.mouseInsideCircle(pos, radius))
             ellipse(pos.x, pos.y, radiusMouseOver, radiusMouseOver);
         else ellipse(pos.x, pos.y, radius, radius);
+
+        this.position = pos;
     }
 
     setState(value) {

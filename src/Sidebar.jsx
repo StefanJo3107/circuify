@@ -63,10 +63,7 @@ function SidebarOptions(props) {
 function CollapsableMenu(props) {
     const [open, setOpen] = useState(props.isOpen);
 
-    const menuChunks = _.chunk(
-        props.menuItems,
-        Math.ceil(props.menuItems.length / 3)
-    );
+    const menuChunks = _.chunk(props.menuItems, Math.ceil(3));
 
     return (
         <>
@@ -106,11 +103,48 @@ export default class Sidebar extends React.Component {
         this.state = { refresh: false };
     }
 
+    setSelection = (optionName, optionType) => {
+        selectedOption = { option: optionName, type: optionType };
+        sessionStorage.setItem("selectedOption", optionName);
+        sessionStorage.setItem("selectedType", optionType);
+        this.setState({
+            refresh: !this.state.refresh,
+        });
+    };
+
     render() {
         const tools = [
             {
                 image: "../Images/Cursor.png",
                 name: "SELECT",
+            },
+        ];
+
+        const inputs = [
+            {
+                image:
+                    "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Buffer_ANSI.svg/150px-Buffer_ANSI.svg.png",
+                name: "TRUE",
+            },
+            {
+                image:
+                    "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Buffer_ANSI.svg/150px-Buffer_ANSI.svg.png",
+                name: "FALSE",
+            },
+            {
+                image:
+                    "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Buffer_ANSI.svg/150px-Buffer_ANSI.svg.png",
+                name: "CLOCK",
+            },
+            {
+                image:
+                    "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Buffer_ANSI.svg/150px-Buffer_ANSI.svg.png",
+                name: "BUTTON",
+            },
+            {
+                image:
+                    "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Buffer_ANSI.svg/150px-Buffer_ANSI.svg.png",
+                name: "SWITCH",
             },
         ];
 
@@ -168,16 +202,16 @@ export default class Sidebar extends React.Component {
                                 type="TOOL"
                                 menuItems={tools}
                                 onClick={(name) =>
-                                    SetSelection(name, "TOOL", this)
+                                    this.setSelection(name, "TOOL")
                                 }
                                 imageWidth={40}
                             />
                             <CollapsableMenu
                                 isOpen={true}
                                 menuName="Inputs"
-                                menuItems={gates}
+                                menuItems={inputs}
                                 onClick={(name) =>
-                                    SetSelection(name, "INPUT", this)
+                                    this.setSelection(name, "INPUT")
                                 }
                             />
                             <CollapsableMenu
@@ -185,7 +219,7 @@ export default class Sidebar extends React.Component {
                                 menuName="Logic Gates"
                                 menuItems={gates}
                                 onClick={(name) =>
-                                    SetSelection(name, "GATE", this)
+                                    this.setSelection(name, "GATE")
                                 }
                             />
                             <CollapsableMenu
@@ -193,7 +227,7 @@ export default class Sidebar extends React.Component {
                                 menuName="Outputs"
                                 menuItems={gates}
                                 onClick={(name) =>
-                                    SetSelection(name, "OUTPUT", this)
+                                    this.setSelection(name, "OUTPUT")
                                 }
                             />
                         </ul>
@@ -202,13 +236,4 @@ export default class Sidebar extends React.Component {
             </>
         );
     }
-}
-
-function SetSelection(optionName, optionType, obj) {
-    selectedOption = { option: optionName, type: optionType };
-    sessionStorage.setItem("selectedOption", optionName);
-    sessionStorage.setItem("selectedType", optionType);
-    obj.setState({
-        refresh: !obj.state.refresh,
-    });
 }

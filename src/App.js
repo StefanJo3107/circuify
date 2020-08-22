@@ -1,9 +1,11 @@
 import React from "react";
 import Row from "react-bootstrap/Row";
 import Container from "react-bootstrap/Container";
+
 import "./App.css";
 import Navbar from "./Navbar.jsx";
 import Sidebar from "./Sidebar.jsx";
+import Footer from "./Footer.jsx";
 
 function App() {
     return (
