@@ -1,6 +1,12 @@
-class Input {
-    constructor(initialState) {
+let jointType = {
+    INPUT: "input",
+    OUTPUT: "output",
+};
+
+class Joint {
+    constructor(initialState, type) {
         this.state = initialState;
+        this.type = type;
     }
 
     show(pos, radius, radiusMouseOver, clickable) {

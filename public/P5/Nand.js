@@ -1,4 +1,4 @@
-class And extends Element {
+class Nand extends Element {
     constructor() {
         super(4, 2, 2, 2);
         this.inputs = [
@@ -64,9 +64,16 @@ class And extends Element {
         );
         vertex(pos.x + cellSize, pos.y + 2 * cellSize);
         endShape(CLOSE);
+
+        ellipse(
+            pos.x + 3 * cellSize + cellSize / 6,
+            pos.y + cellSize,
+            cellSize / 3,
+            cellSize / 3
+        );
     }
 
     calculateOutput() {
-        this.output.state = this.inputs[0].state && this.inputs[1].state;
+        this.output.state = !(this.inputs[0].state && this.inputs[1].state);
     }
 }

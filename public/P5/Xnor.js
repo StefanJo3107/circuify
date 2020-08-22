@@ -1,4 +1,4 @@
-class And extends Element {
+class Xnor extends Element {
     constructor() {
         super(4, 2, 2, 2);
         this.inputs = [
@@ -10,16 +10,17 @@ class And extends Element {
 
     show(pos, cellSize, placed) {
         super.setColor(placed);
+
         line(
             pos.x,
             pos.y + cellSize / 2,
-            pos.x + cellSize,
+            pos.x + 1.2 * cellSize,
             pos.y + cellSize / 2
         );
         line(
             pos.x,
             pos.y + (3 * cellSize) / 2,
-            pos.x + cellSize,
+            pos.x + 1.2 * cellSize,
             pos.y + (3 * cellSize) / 2
         );
 
@@ -51,22 +52,46 @@ class And extends Element {
             placed
         );
 
+        noFill();
         beginShape();
-        vertex(pos.x + cellSize, pos.y);
-        vertex(pos.x + 2 * cellSize, pos.y);
-        bezierVertex(
-            pos.x + 3.2 * cellSize,
-            pos.y,
-            pos.x + 3.2 * cellSize,
-            pos.y + 2 * cellSize,
-            pos.x + 2 * cellSize,
+        vertex(pos.x + 0.8 * cellSize, pos.y);
+
+        quadraticVertex(
+            pos.x + cellSize * 1.2,
+            pos.y + cellSize,
+            pos.x + 0.8 * cellSize,
             pos.y + 2 * cellSize
         );
-        vertex(pos.x + cellSize, pos.y + 2 * cellSize);
-        endShape(CLOSE);
+        endShape();
+
+        super.setColor(placed);
+        beginShape();
+        vertex(pos.x + cellSize, pos.y);
+
+        quadraticVertex(
+            pos.x + cellSize * 1.5,
+            pos.y + cellSize,
+            pos.x + cellSize,
+            pos.y + 2 * cellSize
+        );
+        quadraticVertex(
+            pos.x + 2.5 * cellSize,
+            pos.y + 2 * cellSize,
+            pos.x + 3 * cellSize,
+            pos.y + cellSize
+        );
+        quadraticVertex(pos.x + 2.5 * cellSize, pos.y, pos.x + cellSize, pos.y);
+        endShape();
+
+        ellipse(
+            pos.x + 3 * cellSize + cellSize / 6,
+            pos.y + cellSize,
+            cellSize / 3,
+            cellSize / 3
+        );
     }
 
     calculateOutput() {
-        this.output.state = this.inputs[0].state && this.inputs[1].state;
+        this.output.state = !(this.inputs[0].state != this.inputs[1].state);
     }
 }

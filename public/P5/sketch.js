@@ -2,6 +2,8 @@ let cellSize = 18;
 let grid;
 
 let placingElement = null;
+let placingName = "";
+let placingType = "";
 let slider;
 let elements;
 
@@ -10,9 +12,11 @@ function setup() {
     let canvas = createCanvas(holder.offsetWidth, windowHeight - 50, P2D);
     canvas.parent("canvasHolder");
 
+    sessionStorage.setItem("selectedOption", "SELECT");
+    sessionStorage.setItem("selectedType", "TOOL");
+
     grid = new Grid(220);
     elements = [];
-    placingElement = new And();
 }
 
 function draw() {
@@ -20,8 +24,10 @@ function draw() {
 }
 
 function RefreshCanvas() {
-    background(248);
+    background(235);
     grid.show();
+
+    getPlacingElement();
 
     if (placingElement != null && mouseInsideBounds()) {
         placingElement.show(
@@ -39,11 +45,33 @@ function RefreshCanvas() {
     }
 }
 
+function getPlacingElement() {
+    selected = {
+        name: sessionStorage.getItem("selectedOption"),
+        type: sessionStorage.getItem("selectedType"),
+    };
+    if (selected.name != null && selected.type != null) {
+        if (selected.type != "TOOL") {
+            placingElement = eval("new " + selected.name.toTitleCase() + "()");
+            placingName = selected.name;
+            placingType = selected.type;
+        } else if (selected.type == "TOOL") {
+            placingElement = null;
+            placingName = "";
+            placingType = "";
+        }
+    }
+}
+
 function mousePressed() {
     if (placingElement != null && mouseInsideBounds()) {
         let pos = grid.snapToGrid(createVector(mouseX, mouseY));
         placingElement.setPosition(pos, grid.posToCell(pos));
-        elements.push(placingElement);
+        let clone = Object.assign(
+            Object.create(Object.getPrototypeOf(placingElement)),
+            placingElement
+        );
+        elements.push(clone);
         placingElement = null;
     }
 }
@@ -70,3 +98,9 @@ function DrawGrid() {
         line(0, i, width, i);
     }
 }
+
+String.prototype.toTitleCase = function () {
+    return this.replace(/\w\S*/g, function (txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+};
