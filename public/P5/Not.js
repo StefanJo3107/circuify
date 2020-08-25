@@ -1,8 +1,8 @@
 class Not extends Element {
     constructor() {
         super(4, 2, 2, 2);
-        this.input = new Joint(false, jointType.INPUT);
-        this.output = new Joint(false, jointType.OUTPUT);
+        this.inputs = [new Joint(false, jointType.INPUT)];
+        this.outputs = [new Joint(false, jointType.OUTPUT)];
     }
 
     show(pos, cellSize, placed) {
@@ -17,19 +17,21 @@ class Not extends Element {
             pos.y + cellSize
         );
 
-        this.input.show(
+        this.inputs[0].show(
             createVector(pos.x, pos.y + cellSize),
             cellSize / 2,
             cellSize,
             placed
         );
 
-        this.output.show(
+        this.outputs[0].show(
             createVector(pos.x + 4 * cellSize, pos.y + cellSize),
             cellSize / 2,
             cellSize,
             placed
         );
+
+        super.setColor(placed);
 
         beginShape();
         vertex(pos.x + cellSize, pos.y);
@@ -46,6 +48,6 @@ class Not extends Element {
     }
 
     calculateOutput() {
-        this.output.setState(!this.input.state);
+        this.outputs[0].setState(!this.inputs[0].state);
     }
 }

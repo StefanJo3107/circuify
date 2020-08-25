@@ -13,14 +13,14 @@ import arrowsCollapse from "@iconify/icons-bi/arrows-collapse";
 export let selectedOption = { option: "SELECT", type: "TOOL" };
 
 SidebarOption.defaultProps = {
-    imageWidth: 52,
+    imageWidth: 53,
 };
 
 function SidebarOption(props) {
     return (
         <Button
             className={
-                props.name === selectedOption.option
+                props.name === sessionStorage.getItem("selectedOption")
                     ? "btnOutline border-0"
                     : "btnNoOutline border-0"
             }
@@ -34,7 +34,10 @@ function SidebarOption(props) {
                     width={props.imageWidth}
                     alt={props.name}
                 />
-                <Figure.Caption className="text-center">
+                <Figure.Caption
+                    className="text-center"
+                    style={{ color: "black" }}
+                >
                     {props.name}
                 </Figure.Caption>
             </Figure>
@@ -111,6 +114,17 @@ export default class Sidebar extends React.Component {
             refresh: !this.state.refresh,
         });
     };
+
+    componentDidMount() {
+        this.interval = setInterval(
+            () => this.setState({ refresh: !this.state.refresh }),
+            250
+        );
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.interval);
+    }
 
     render() {
         const tools = [

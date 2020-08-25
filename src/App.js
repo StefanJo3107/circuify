@@ -13,7 +13,9 @@ function App() {
             <Navbar />
             <Container fluid>
                 <Row>
-                    <Sidebar />
+                    <Sidebar
+                        selection={sessionStorage.getItem("selectedOption")}
+                    />
                     <div
                         className="col-md-9 ml-sm-auto px-0 col-lg-10"
                         id="canvasHolder"

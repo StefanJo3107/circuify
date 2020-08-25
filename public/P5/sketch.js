@@ -1,11 +1,24 @@
 let cellSize = 18;
 let grid;
 
+let sineFactor = 0;
+
 let placingElement = null;
 let placingName = "";
 let placingType = "";
 let slider;
 let elements;
+
+let selectedInput = null;
+let selectedOutput = null;
+
+let connections = [];
+let usedInputs = [];
+
+selected = {
+    name: sessionStorage.getItem("selectedOption"),
+    type: sessionStorage.getItem("selectedType"),
+};
 
 function setup() {
     let holder = document.getElementById("canvasHolder");
@@ -30,7 +43,7 @@ function RefreshCanvas() {
     getPlacingElement();
     placeElement();
 
-    if (placingElement != null && mouseInsideBounds()) {
+    if (placingElement != null && mouseInsideCanvas()) {
         placingElement.show(
             grid.snapToGrid(createVector(mouseX, mouseY)),
             cellSize,
@@ -38,12 +51,76 @@ function RefreshCanvas() {
         );
     }
 
+    showConnectionInProgress();
+
+    if (connections != null) {
+        for (let connection of connections) {
+            connection.show();
+            connection.updateValues();
+        }
+    }
+
     if (elements != null) {
         for (let i = 0; i < elements.length; i++) {
             elements[i].refreshPosition();
             elements[i].showPlaced(cellSize);
+            elements[i].calculateOutput();
         }
     }
+
+    sineFactor += 0.1;
+}
+
+function mousePressed() {
+    if (mouseButton === LEFT) {
+        for (let i = 0; i < elements.length; i++) {
+            elements[i].updateJoints();
+        }
+    }
+}
+
+function showConnectionInProgress() {
+    if (selectedInput != null && selectedOutput == null) {
+        stroke(0);
+        strokeWeight(4);
+        noFill();
+        bezier(
+            selectedInput.position.x,
+            selectedInput.position.y,
+            selectedInput.position.x - 3 * cellSize,
+            selectedInput.position.y,
+            mouseX + 3 * cellSize,
+            mouseY,
+            mouseX,
+            mouseY
+        );
+    } else if (selectedInput == null && selectedOutput != null) {
+        stroke(0);
+        strokeWeight(4);
+        noFill();
+        bezier(
+            selectedOutput.position.x,
+            selectedOutput.position.y,
+            selectedOutput.position.x + 3 * cellSize,
+            selectedOutput.position.y,
+            mouseX - 3 * cellSize,
+            mouseY,
+            mouseX,
+            mouseY
+        );
+    } else if (selectedInput != null && selectedOutput != null) {
+        connections.push(new Connection(selectedInput, selectedOutput));
+        usedInputs.push(selectedInput);
+        selectedInput = null;
+        selectedOutput = null;
+    }
+}
+
+function inputIsUsed(input) {
+    for (let i = 0; i < usedInputs.length; i++) {
+        if (_.isEqual(input, usedInputs[i])) return true;
+    }
+    return false;
 }
 
 function getPlacingElement() {
@@ -52,21 +129,27 @@ function getPlacingElement() {
         type: sessionStorage.getItem("selectedType"),
     };
     if (selected.name != null && selected.type != null) {
-        if (selected.type != "TOOL") {
+        if (selected.type != "TOOL" && placingName != selected.name) {
             placingElement = eval("new " + selected.name.toTitleCase() + "()");
             placingName = selected.name;
             placingType = selected.type;
-        } else if (selected.type == "TOOL") {
+
+            selectedInput = null;
+            selectedOutput = null;
+        } else if (selected.type == "TOOL" && placingName != "") {
             placingElement = null;
             placingName = "";
             placingType = "";
+
+            selectedInput = null;
+            selectedOutput = null;
         }
     }
 }
 
 function placeElement() {
     if (mouseIsPressed && mouseButton === LEFT) {
-        if (placingElement != null && mouseInsideBounds()) {
+        if (placingElement != null && mouseInsideCanvas()) {
             let pos = grid.snapToGrid(createVector(mouseX, mouseY));
             placingElement.setPosition(pos, grid.posToCell(pos));
             let clone = Object.assign(
@@ -75,11 +158,13 @@ function placeElement() {
             );
             elements.push(clone);
             placingElement = null;
+            sessionStorage.setItem("selectedOption", "SELECT");
+            sessionStorage.setItem("selectedType", "TOOL");
         }
     }
 }
 
-function mouseInsideBounds() {
+function mouseInsideCanvas() {
     return mouseX >= 0 && mouseX <= width && mouseY >= 0 && mouseY <= height;
 }
 
@@ -103,15 +188,17 @@ function DrawGrid() {
 }
 
 function mouseWheel(event) {
-    let delta = event.delta;
-    if (delta > 0) {
-        delta = -1;
-    } else if (delta < 0) {
-        delta = 1;
-    }
+    if (mouseInsideCanvas()) {
+        let delta = event.delta;
+        if (delta > 0) {
+            delta = -1;
+        } else if (delta < 0) {
+            delta = 1;
+        }
 
-    cellSize += delta;
-    cellSize = constrain(cellSize, 10, 30);
+        cellSize += delta;
+        cellSize = constrain(cellSize, 10, 30);
+    }
 }
 
 String.prototype.toTitleCase = function () {
@@ -119,3 +206,10 @@ String.prototype.toTitleCase = function () {
         return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
     });
 };
+
+function keyPressed() {
+    if (keyCode == ESCAPE) {
+        selectedInput = null;
+        selectedOutput = null;
+    }
+}

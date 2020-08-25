@@ -5,7 +5,7 @@ class Xor extends Element {
             new Joint(false, jointType.INPUT),
             new Joint(false, jointType.INPUT),
         ];
-        this.output = new Joint(false, jointType.OUTPUT);
+        this.outputs = [new Joint(false, jointType.OUTPUT)];
     }
 
     show(pos, cellSize, placed) {
@@ -45,7 +45,7 @@ class Xor extends Element {
             placed
         );
 
-        this.output.show(
+        this.outputs[0].show(
             createVector(pos.x + 4 * cellSize, pos.y + cellSize),
             cellSize / 2,
             cellSize,
@@ -85,6 +85,6 @@ class Xor extends Element {
     }
 
     calculateOutput() {
-        this.output.setState(this.inputs[0].state != this.inputs[1].state);
+        this.outputs[0].setState(this.inputs[0].state != this.inputs[1].state);
     }
 }

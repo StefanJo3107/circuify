@@ -13,8 +13,8 @@ class Element {
             fill(255);
         } else {
             strokeWeight(2);
-            stroke(40, 200, 40);
-            fill(0, 255, 0);
+            stroke(65, 194, 56);
+            fill(126, 204, 120);
         }
     }
 
@@ -30,6 +30,29 @@ class Element {
         this.position = pos;
         this.cell = cell;
     }
+
+    updateJoints = () => {
+        if (selectedInput == null) {
+            for (let i = 0; i < this.inputs.length; i++) {
+                if (
+                    this.inputs[i].mouseInsideCircle() &&
+                    !inputIsUsed(this.inputs[i])
+                ) {
+                    this.inputs[i].selectJoint();
+                    console.log("input");
+                }
+            }
+        }
+
+        if (selectedOutput == null) {
+            for (let i = 0; i < this.outputs.length; i++) {
+                if (this.outputs[i].mouseInsideCircle()) {
+                    this.outputs[i].selectJoint();
+                    console.log("output");
+                }
+            }
+        }
+    };
 
     refreshPosition() {
         this.position = grid.cellToPos(this.cell);

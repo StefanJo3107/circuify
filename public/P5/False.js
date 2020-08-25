@@ -1,7 +1,8 @@
 class False extends Element {
     constructor() {
         super(3, 2, 2, 2);
-        this.output = new Joint(false, jointType.OUTPUT);
+        this.inputs = [];
+        this.outputs = [new Joint(false, jointType.OUTPUT)];
     }
 
     show(pos, cellSize, placed) {
@@ -13,12 +14,14 @@ class False extends Element {
             pos.y + cellSize
         );
 
-        this.output.show(
+        this.outputs[0].show(
             createVector(pos.x + 3 * cellSize, pos.y + cellSize),
             cellSize / 2,
             cellSize,
             placed
         );
+
+        super.setColor(placed);
 
         rect(pos.x, pos.y, 2 * cellSize, 2 * cellSize);
         textSize(cellSize * 1.8);
@@ -28,6 +31,6 @@ class False extends Element {
     }
 
     calculateOutput() {
-        this.output.setState(false);
+        this.outputs[0].setState(false);
     }
 }
