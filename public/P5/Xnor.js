@@ -8,8 +8,10 @@ class Xnor extends Element {
         this.outputs = [new Joint(false, jointType.OUTPUT)];
     }
 
-    show(pos, cellSize, placed) {
-        super.setColor(placed);
+    show = (pos, cellSize) => {
+        this.setColor();
+
+        this.position = pos;
 
         line(
             pos.x,
@@ -35,21 +37,21 @@ class Xnor extends Element {
             createVector(pos.x, pos.y + cellSize / 2),
             cellSize / 2,
             cellSize,
-            placed
+            this.state == elementState.Placed
         );
 
         this.inputs[1].show(
             createVector(pos.x, pos.y + (3 * cellSize) / 2),
             cellSize / 2,
             cellSize,
-            placed
+            this.state == elementState.Placed
         );
 
         this.outputs[0].show(
             createVector(pos.x + 4 * cellSize, pos.y + cellSize),
             cellSize / 2,
             cellSize,
-            placed
+            this.state == elementState.Placed
         );
 
         noFill();
@@ -64,7 +66,7 @@ class Xnor extends Element {
         );
         endShape();
 
-        super.setColor(placed);
+        this.setColor();
         beginShape();
         vertex(pos.x + cellSize, pos.y);
 
@@ -89,11 +91,11 @@ class Xnor extends Element {
             cellSize / 3,
             cellSize / 3
         );
-    }
+    };
 
-    calculateOutput() {
+    calculateOutput = () => {
         this.outputs[0].setState(
             !(this.inputs[0].state != this.inputs[1].state)
         );
-    }
+    };
 }

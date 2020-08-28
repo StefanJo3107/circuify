@@ -5,8 +5,10 @@ class Buffer extends Element {
         this.outputs = [new Joint(false, jointType.OUTPUT)];
     }
 
-    show(pos, cellSize, placed) {
-        super.setColor(placed);
+    show = (pos, cellSize) => {
+        this.setColor();
+
+        this.position = pos;
 
         line(pos.x, pos.y + cellSize, pos.x + 1.2 * cellSize, pos.y + cellSize);
 
@@ -21,26 +23,26 @@ class Buffer extends Element {
             createVector(pos.x, pos.y + cellSize),
             cellSize / 2,
             cellSize,
-            placed
+            this.state == elementState.Placed
         );
 
         this.outputs[0].show(
             createVector(pos.x + 4 * cellSize, pos.y + cellSize),
             cellSize / 2,
             cellSize,
-            placed
+            this.state == elementState.Placed
         );
 
-        super.setColor(placed);
+        this.setColor();
 
         beginShape();
         vertex(pos.x + cellSize, pos.y);
         vertex(pos.x + 3 * cellSize, pos.y + cellSize);
         vertex(pos.x + cellSize, pos.y + 2 * cellSize);
         endShape(CLOSE);
-    }
+    };
 
-    calculateOutput() {
+    calculateOutput = () => {
         this.outputs[0].setState(this.inputs[0].state);
-    }
+    };
 }

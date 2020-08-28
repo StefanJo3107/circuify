@@ -3,6 +3,8 @@ let grid;
 
 let sineFactor = 0;
 
+let selectedOption;
+
 let placingElement = null;
 let placingName = "";
 let placingType = "";
@@ -14,6 +16,15 @@ let selectedOutput = null;
 
 let connections = [];
 let usedInputs = [];
+let selectedElements = [];
+
+let dragStartPos = null;
+let dragEndPos = null;
+let drag = null;
+
+let selectionRectStart = null;
+let selectionRectEnd = null;
+let selectionInProgress = false;
 
 selected = {
     name: sessionStorage.getItem("selectedOption"),
@@ -43,14 +54,6 @@ function RefreshCanvas() {
     getPlacingElement();
     placeElement();
 
-    if (placingElement != null && mouseInsideCanvas()) {
-        placingElement.show(
-            grid.snapToGrid(createVector(mouseX, mouseY)),
-            cellSize,
-            false
-        );
-    }
-
     showConnectionInProgress();
 
     if (connections != null) {
@@ -63,8 +66,51 @@ function RefreshCanvas() {
     if (elements != null) {
         for (let i = 0; i < elements.length; i++) {
             elements[i].refreshPosition();
-            elements[i].showPlaced(cellSize);
+            elements[i].show(elements[i].getPosition(), cellSize);
             elements[i].calculateOutput();
+        }
+    }
+
+    if (selectionInProgress && selectionRectEnd != null) {
+        fill(60, 191, 214, 100);
+        stroke(60, 191, 214);
+        if (
+            selectionRectStart.y < selectionRectEnd.y &&
+            selectionRectStart.x < selectionRectEnd.x
+        ) {
+            rect(
+                selectionRectStart.x,
+                selectionRectStart.y,
+                abs(selectionRectEnd.x - selectionRectStart.x),
+                abs(selectionRectEnd.y - selectionRectStart.y)
+            );
+        } else if (
+            selectionRectStart.y > selectionRectEnd.y &&
+            selectionRectStart.x > selectionRectEnd.x
+        ) {
+            rect(
+                selectionRectEnd.x,
+                selectionRectEnd.y,
+                abs(selectionRectEnd.x - selectionRectStart.x),
+                abs(selectionRectEnd.y - selectionRectStart.y)
+            );
+        } else if (
+            selectionRectStart.y > selectionRectEnd.y &&
+            selectionRectStart.x < selectionRectEnd.x
+        ) {
+            rect(
+                selectionRectStart.x,
+                selectionRectEnd.y,
+                abs(selectionRectEnd.x - selectionRectStart.x),
+                abs(selectionRectEnd.y - selectionRectStart.y)
+            );
+        } else {
+            rect(
+                selectionRectEnd.x,
+                selectionRectStart.y,
+                abs(selectionRectEnd.x - selectionRectStart.x),
+                abs(selectionRectEnd.y - selectionRectStart.y)
+            );
         }
     }
 
@@ -72,11 +118,85 @@ function RefreshCanvas() {
 }
 
 function mousePressed() {
-    if (mouseButton === LEFT) {
+    if (mouseButton === LEFT && selectedOption.name == "SELECT") {
         for (let i = 0; i < elements.length; i++) {
             elements[i].updateJoints();
+            let selected = elements[i].checkSelection(
+                grid.snapToGrid(createVector(mouseX, mouseY))
+            );
+
+            if (selected) {
+                dragStartPos = grid.snapToGrid(createVector(mouseX, mouseY));
+            }
+        }
+
+        if (dragStartPos == null) {
+            selectionRectStart = createVector(mouseX, mouseY);
+            selectionRectEnd = null;
+            selectionInProgress = true;
         }
     }
+}
+
+function mouseDragged() {
+    if (mouseButton === LEFT && selectedOption.name == "SELECT") {
+        if (dragStartPos != null) {
+            dragEndPos = grid.snapToGrid(createVector(mouseX, mouseY));
+
+            let currentDrag = createVector(
+                dragEndPos.x >= dragStartPos.x
+                    ? dragEndPos.x - dragStartPos.x
+                    : -dragEndPos.x + dragStartPos.x,
+                dragEndPos.y >= dragStartPos.y
+                    ? dragEndPos.y - dragStartPos.y
+                    : -dragEndPos.y + dragStartPos.y
+            );
+
+            for (let i = 0; i < elements.length; i++) {
+                if (elements[i].getState() == elementState.Selected) {
+                    if (drag != null) {
+                        totalDrag = createVector(0, 0);
+                        if (dragEndPos.x > elements[i].getPosition().x)
+                            totalDrag.x = abs(drag.x - currentDrag.x);
+                        else totalDrag.x = -abs(drag.x - currentDrag.x);
+
+                        if (dragEndPos.y > elements[i].getPosition().y)
+                            totalDrag.y = abs(drag.y - currentDrag.y);
+                        else totalDrag.y = -abs(drag.y - currentDrag.y);
+
+                        elements[i].setPosition(
+                            createVector(
+                                elements[i].getPosition().x + totalDrag.x,
+                                elements[i].getPosition().y + totalDrag.y
+                            ),
+                            grid.posToCell(
+                                createVector(
+                                    elements[i].getPosition().x + totalDrag.x,
+                                    elements[i].getPosition().y + totalDrag.y
+                                )
+                            )
+                        );
+                    }
+                }
+            }
+
+            drag = currentDrag;
+        } else {
+            drag = null;
+            dragEndPos = null;
+        }
+
+        if (selectionInProgress) {
+            selectionRectEnd = createVector(mouseX, mouseY);
+        }
+    }
+}
+
+function mouseReleased() {
+    dragStartPos = null;
+    dragEndPos = null;
+    drag = null;
+    selectionInProgress = false;
 }
 
 function showConnectionInProgress() {
@@ -124,19 +244,24 @@ function inputIsUsed(input) {
 }
 
 function getPlacingElement() {
-    selected = {
+    selectedOption = {
         name: sessionStorage.getItem("selectedOption"),
         type: sessionStorage.getItem("selectedType"),
     };
-    if (selected.name != null && selected.type != null) {
-        if (selected.type != "TOOL" && placingName != selected.name) {
-            placingElement = eval("new " + selected.name.toTitleCase() + "()");
-            placingName = selected.name;
-            placingType = selected.type;
+    if (selectedOption.name != null && selectedOption.type != null) {
+        if (
+            selectedOption.type != "TOOL" &&
+            placingName != selectedOption.name
+        ) {
+            placingElement = eval(
+                "new " + selectedOption.name.toTitleCase() + "()"
+            );
+            placingName = selectedOption.name;
+            placingType = selectedOption.type;
 
             selectedInput = null;
             selectedOutput = null;
-        } else if (selected.type == "TOOL" && placingName != "") {
+        } else if (selectedOption.type == "TOOL" && placingName != "") {
             placingElement = null;
             placingName = "";
             placingType = "";
@@ -148,6 +273,13 @@ function getPlacingElement() {
 }
 
 function placeElement() {
+    if (placingElement != null && mouseInsideCanvas()) {
+        placingElement.show(
+            grid.snapToGrid(createVector(mouseX, mouseY)),
+            cellSize
+        );
+    }
+
     if (mouseIsPressed && mouseButton === LEFT) {
         if (placingElement != null && mouseInsideCanvas()) {
             let pos = grid.snapToGrid(createVector(mouseX, mouseY));
@@ -156,6 +288,7 @@ function placeElement() {
                 Object.create(Object.getPrototypeOf(placingElement)),
                 placingElement
             );
+            clone.setElementState(elementState.Placed);
             elements.push(clone);
             placingElement = null;
             sessionStorage.setItem("selectedOption", "SELECT");

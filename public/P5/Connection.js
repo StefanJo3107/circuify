@@ -30,7 +30,7 @@ class Connection {
         );
     }
 
-    updateValues() {
+    updateValues = () => {
         this.input.setState(this.output.state);
-    }
+    };
 }

@@ -45,17 +45,15 @@ class Joint {
         if (clickable && this.mouseInsideCircle(pos, radius))
             ellipse(pos.x, pos.y, radiusMouseOver, radiusMouseOver);
         else ellipse(pos.x, pos.y, radius, radius);
-
-        this.position = pos;
     };
 
-    setState(value) {
+    setState = (value) => {
         this.state = value;
-    }
+    };
 
-    resetState(value) {
+    resetState = (value) => {
         this.setState(this.initialState);
-    }
+    };
 
     selectJoint = () => {
         if (this.type == jointType.INPUT) {
@@ -65,12 +63,12 @@ class Joint {
         }
     };
 
-    mouseInsideCircle() {
+    mouseInsideCircle = () => {
         return (
             mouseX >= this.position.x - this.radius &&
             mouseX <= this.position.x + this.radius &&
             mouseY >= this.position.y - this.radius &&
             mouseY <= this.position.y + this.radius
         );
-    }
+    };
 }

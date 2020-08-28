@@ -5,8 +5,8 @@ class False extends Element {
         this.outputs = [new Joint(false, jointType.OUTPUT)];
     }
 
-    show(pos, cellSize, placed) {
-        super.setColor(placed);
+    show = (pos, cellSize) => {
+        this.setColor();
         line(
             pos.x + 2 * cellSize,
             pos.y + cellSize,
@@ -18,19 +18,19 @@ class False extends Element {
             createVector(pos.x + 3 * cellSize, pos.y + cellSize),
             cellSize / 2,
             cellSize,
-            placed
+            this.state == elementState.Placed
         );
 
-        super.setColor(placed);
+        this.setColor();
 
         rect(pos.x, pos.y, 2 * cellSize, 2 * cellSize);
         textSize(cellSize * 1.8);
         fill(0);
         text("0", pos.x + 0.5 * cellSize, pos.y + 1.65 * cellSize);
-        super.setColor(placed);
-    }
+        this.setColor();
+    };
 
-    calculateOutput() {
+    calculateOutput = () => {
         this.outputs[0].setState(false);
-    }
+    };
 }

@@ -1,35 +1,70 @@
+let elementState = {
+    Placing: "Placing",
+    Placed: "Placed",
+    Selected: "Selected",
+};
+
 class Element {
-    constructor(cellWidth, cellHeight, elementWidth, elementHeight) {
-        this.cellWidth = cellWidth;
-        this.cellHeight = cellHeight;
+    constructor(entireWidth, entireHeight, elementWidth, elementHeight) {
+        this.entireWidth = entireWidth;
+        this.entireHeight = entireHeight;
         this.elementWidth = elementWidth;
         this.elementHeight = elementHeight;
+        this.state = elementState.Placing;
     }
 
-    setColor(placed) {
-        if (placed) {
+    setColor = () => {
+        if (this.state == elementState.Placed) {
             strokeWeight(2);
             stroke(0);
             fill(255);
-        } else {
+        } else if (this.state == elementState.Placing) {
             strokeWeight(2);
             stroke(65, 194, 56);
             fill(126, 204, 120);
+        } else if (this.state == elementState.Selected) {
+            strokeWeight(2);
+            stroke(60, 191, 214);
+            fill(255);
         }
-    }
+    };
 
-    show(pos, cellSize, placed) {}
+    getState = () => {
+        return this.state;
+    };
 
-    calculateOutput() {}
+    getPosition = () => {
+        return this.position;
+    };
 
-    showPlaced(cellSize) {
-        this.show(this.position, cellSize, true);
-    }
+    checkSelection = (mousePos) => {
+        if (
+            mousePos.x >= this.position.x &&
+            mousePos.x <= this.position.x + cellSize * this.entireWidth &&
+            mousePos.y >= this.position.y &&
+            mousePos.y <= this.position.y + cellSize * this.entireHeight
+        ) {
+            this.state = elementState.Selected;
+            return true;
+        } else {
+            this.state = elementState.Placed;
+        }
 
-    setPosition(pos, cell) {
+        return false;
+    };
+
+    setElementState = (state) => {
+        this.state = state;
+    };
+
+    showPlaced = (cellSize) => {
+        this.show(this.position, cellSize);
+    };
+
+    setPosition = (pos, cell) => {
         this.position = pos;
         this.cell = cell;
-    }
+    };
 
     updateJoints = () => {
         if (selectedInput == null) {
@@ -54,7 +89,7 @@ class Element {
         }
     };
 
-    refreshPosition() {
+    refreshPosition = () => {
         this.position = grid.cellToPos(this.cell);
-    }
+    };
 }
