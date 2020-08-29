@@ -20,8 +20,8 @@ class Element {
             fill(255);
         } else if (this.state == elementState.Placing) {
             strokeWeight(2);
-            stroke(65, 194, 56);
-            fill(126, 204, 120);
+            stroke("#75b79e");
+            fill("#a7e9af");
         } else if (this.state == elementState.Selected) {
             strokeWeight(2);
             stroke(60, 191, 214);
@@ -74,7 +74,6 @@ class Element {
                     !inputIsUsed(this.inputs[i])
                 ) {
                     this.inputs[i].selectJoint();
-                    console.log("input");
                 }
             }
         }
@@ -83,7 +82,6 @@ class Element {
             for (let i = 0; i < this.outputs.length; i++) {
                 if (this.outputs[i].mouseInsideCircle()) {
                     this.outputs[i].selectJoint();
-                    console.log("output");
                 }
             }
         }

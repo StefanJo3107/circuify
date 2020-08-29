@@ -5,7 +5,15 @@ class Connection {
     }
 
     show() {
-        if (this.output.state == false) {
+        if (this.output.state == null) {
+            stroke(
+                lerpColor(
+                    color(240, 72, 72),
+                    color(214, 15, 15),
+                    map(sin(sineFactor), -1, 1, 0, 1)
+                )
+            );
+        } else if (this.output.state == false) {
             stroke(0);
         } else {
             stroke(

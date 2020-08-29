@@ -18,7 +18,7 @@ class False extends Element {
             createVector(pos.x + 3 * cellSize, pos.y + cellSize),
             cellSize / 2,
             cellSize,
-            this.state == elementState.Placed
+            this.state
         );
 
         this.setColor();

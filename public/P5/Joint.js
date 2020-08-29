@@ -10,19 +10,19 @@ class Joint {
         this.type = type;
     }
 
-    show = (pos, radius, radiusMouseOver, clickable) => {
+    show = (pos, radius, radiusMouseOver, state) => {
         this.position = pos;
         this.radius = radius;
         this.radiusMouseOver = radiusMouseOver;
 
-        if (clickable) {
+        if (state == elementState.Placed || state == elementState.Selected) {
             stroke(0);
             strokeWeight(2);
             fill(255);
         }
 
         if (
-            (clickable &&
+            ((state == elementState.Placed || state == elementState.Selected) &&
                 selectedOutput != null &&
                 this.type == jointType.INPUT &&
                 !inputIsUsed(this)) ||
@@ -33,7 +33,7 @@ class Joint {
         }
 
         if (
-            clickable &&
+            (state == elementState.Placed || state == elementState.Selected) &&
             selectedOutput != null &&
             this.type == jointType.INPUT &&
             inputIsUsed(this)
@@ -42,7 +42,10 @@ class Joint {
             stroke(214, 15, 15);
         }
 
-        if (clickable && this.mouseInsideCircle(pos, radius))
+        if (
+            (state == elementState.Placed || state == elementState.Selected) &&
+            this.mouseInsideCircle(pos, radius)
+        )
             ellipse(pos.x, pos.y, radiusMouseOver, radiusMouseOver);
         else ellipse(pos.x, pos.y, radius, radius);
     };

@@ -2,10 +2,10 @@ class Nor extends Element {
     constructor() {
         super(4, 2, 2, 2);
         this.inputs = [
-            new Joint(false, jointType.INPUT),
-            new Joint(false, jointType.INPUT),
+            new Joint(null, jointType.INPUT),
+            new Joint(null, jointType.INPUT),
         ];
-        this.outputs = [new Joint(false, jointType.OUTPUT)];
+        this.outputs = [new Joint(null, jointType.OUTPUT)];
     }
 
     show = (pos, cellSize) => {
@@ -37,21 +37,21 @@ class Nor extends Element {
             createVector(pos.x, pos.y + cellSize / 2),
             cellSize / 2,
             cellSize,
-            this.state == elementState.Placed
+            this.state
         );
 
         this.inputs[1].show(
             createVector(pos.x, pos.y + (3 * cellSize) / 2),
             cellSize / 2,
             cellSize,
-            this.state == elementState.Placed
+            this.state
         );
 
         this.outputs[0].show(
             createVector(pos.x + 4 * cellSize, pos.y + cellSize),
             cellSize / 2,
             cellSize,
-            this.state == elementState.Placed
+            this.state
         );
 
         this.setColor();
@@ -83,8 +83,12 @@ class Nor extends Element {
     };
 
     calculateOutput = () => {
-        this.outputs[0].setState(
-            !(this.inputs[0].state || this.inputs[1].state)
-        );
+        if (this.inputs[0].state == null || this.inputs[1].state == null) {
+            this.outputs[0].state == null;
+        } else {
+            this.outputs[0].setState(
+                !(this.inputs[0].state || this.inputs[1].state)
+            );
+        }
     };
 }
