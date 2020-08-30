@@ -47,10 +47,27 @@ class Element {
             this.state = elementState.Selected;
             return true;
         } else {
-            this.state = elementState.Placed;
+            return false;
         }
+    };
 
-        return false;
+    checkSelectionInsideRect = (rectStart, rectEnd) => {
+        if (
+            this.position.x >= min(rectStart.x, rectEnd.x) &&
+            this.position.x <= max(rectStart.x, rectEnd.x) &&
+            this.position.y >= min(rectStart.y, rectEnd.y) &&
+            this.position.y <= max(rectStart.y, rectEnd.y)
+        ) {
+            this.state = elementState.Selected;
+            return true;
+        } else {
+            this.state = elementState.Placed;
+            return false;
+        }
+    };
+
+    unselect = () => {
+        this.state = elementState.Placed;
     };
 
     setElementState = (state) => {

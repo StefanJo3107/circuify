@@ -20,6 +20,7 @@ let selectedElements = [];
 
 let dragStartPos = null;
 let dragEndPos = null;
+let initialDragPos = null;
 let drag = null;
 
 let selectionRectStart = null;
@@ -119,14 +120,30 @@ function RefreshCanvas() {
 
 function mousePressed() {
     if (mouseButton === LEFT && selectedOption.name == "SELECT") {
+        let unselectOthers = true;
+        let selectedIndex = -1;
         for (let i = 0; i < elements.length; i++) {
             elements[i].updateJoints();
+            let previousState = elements[i].getState();
             let selected = elements[i].checkSelection(
                 grid.snapToGrid(createVector(mouseX, mouseY))
             );
 
+            if (selected && previousState == elementState.Selected) {
+                unselectOthers = false;
+            }
+
             if (selected) {
                 dragStartPos = grid.snapToGrid(createVector(mouseX, mouseY));
+                selectedIndex = i;
+            }
+        }
+
+        if (unselectOthers) {
+            for (let i = 0; i < elements.length; i++) {
+                if (i != selectedIndex) {
+                    elements[i].unselect();
+                }
             }
         }
 
@@ -143,6 +160,8 @@ function mouseDragged() {
         if (dragStartPos != null) {
             dragEndPos = grid.snapToGrid(createVector(mouseX, mouseY));
 
+            if (initialDragPos == null) initialDragPos = dragEndPos;
+
             let currentDrag = createVector(
                 dragEndPos.x >= dragStartPos.x
                     ? dragEndPos.x - dragStartPos.x
@@ -152,34 +171,37 @@ function mouseDragged() {
                     : -dragEndPos.y + dragStartPos.y
             );
 
+            let totalDrag = createVector(0, 0);
+
+            if (drag != null) {
+                if (dragEndPos.x > initialDragPos.x)
+                    totalDrag.x = abs(drag.x - currentDrag.x);
+                else totalDrag.x = -abs(drag.x - currentDrag.x);
+
+                if (dragEndPos.y > initialDragPos.y)
+                    totalDrag.y = abs(drag.y - currentDrag.y);
+                else totalDrag.y = -abs(drag.y - currentDrag.y);
+            }
+
             for (let i = 0; i < elements.length; i++) {
                 if (elements[i].getState() == elementState.Selected) {
-                    if (drag != null) {
-                        totalDrag = createVector(0, 0);
-                        if (dragEndPos.x > elements[i].getPosition().x)
-                            totalDrag.x = abs(drag.x - currentDrag.x);
-                        else totalDrag.x = -abs(drag.x - currentDrag.x);
-
-                        if (dragEndPos.y > elements[i].getPosition().y)
-                            totalDrag.y = abs(drag.y - currentDrag.y);
-                        else totalDrag.y = -abs(drag.y - currentDrag.y);
-
-                        elements[i].setPosition(
+                    elements[i].setPosition(
+                        createVector(
+                            elements[i].getPosition().x + totalDrag.x,
+                            elements[i].getPosition().y + totalDrag.y
+                        ),
+                        grid.posToCell(
                             createVector(
                                 elements[i].getPosition().x + totalDrag.x,
                                 elements[i].getPosition().y + totalDrag.y
-                            ),
-                            grid.posToCell(
-                                createVector(
-                                    elements[i].getPosition().x + totalDrag.x,
-                                    elements[i].getPosition().y + totalDrag.y
-                                )
                             )
-                        );
-                    }
+                        )
+                    );
                 }
             }
 
+            initialDragPos.x += totalDrag.x;
+            initialDragPos.y += totalDrag.y;
             drag = currentDrag;
         } else {
             drag = null;
@@ -193,10 +215,24 @@ function mouseDragged() {
 }
 
 function mouseReleased() {
+    if (selectionRectEnd != null && selectionRectStart != null) {
+        for (let i = 0; i < elements.length; i++) {
+            elements[i].updateJoints();
+            elements[i].checkSelectionInsideRect(
+                selectionRectStart,
+                selectionRectEnd
+            );
+        }
+
+        selectionRectStart = null;
+        selectionRectEnd = null;
+    }
+
     dragStartPos = null;
     dragEndPos = null;
     drag = null;
     selectionInProgress = false;
+    initialDragPos = null;
 }
 
 function showConnectionInProgress() {
