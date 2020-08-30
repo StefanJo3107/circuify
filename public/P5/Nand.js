@@ -79,7 +79,7 @@ class Nand extends Element {
     };
 
     calculateOutput = () => {
-        if (this.inputs[0].state == null || this.inputs[1].state) {
+        if (this.inputs[0].state == null || this.inputs[1].state == null) {
             this.outputs[0].state == null;
         } else {
             this.outputs[0].setState(

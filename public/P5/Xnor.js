@@ -54,6 +54,7 @@ class Xnor extends Element {
             this.state
         );
 
+        this.setColor();
         noFill();
         beginShape();
         vertex(pos.x + 0.8 * cellSize, pos.y);

@@ -54,6 +54,10 @@ class Joint {
         this.state = value;
     };
 
+    getState = () => {
+        return this.state;
+    };
+
     resetState = (value) => {
         this.setState(this.initialState);
     };

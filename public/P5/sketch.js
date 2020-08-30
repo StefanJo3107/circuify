@@ -122,7 +122,8 @@ function mousePressed() {
     if (mouseButton === LEFT && selectedOption.name == "SELECT") {
         let unselectOthers = true;
         let selectedIndex = -1;
-        for (let i = 0; i < elements.length; i++) {
+        //starting in reverse because of drawing order of elements
+        for (let i = elements.length - 1; i >= 0; i--) {
             elements[i].updateJoints();
             let previousState = elements[i].getState();
             let selected = elements[i].checkSelection(
@@ -136,6 +137,7 @@ function mousePressed() {
             if (selected) {
                 dragStartPos = grid.snapToGrid(createVector(mouseX, mouseY));
                 selectedIndex = i;
+                break;
             }
         }
 
