@@ -13,7 +13,7 @@ import arrowsCollapse from "@iconify/icons-bi/arrows-collapse";
 export let selectedOption = { option: "SELECT", type: "TOOL" };
 
 SidebarOption.defaultProps = {
-    imageWidth: 53,
+    imageWidth: 50,
 };
 
 function SidebarOption(props) {
@@ -66,7 +66,7 @@ function SidebarOptions(props) {
 function CollapsableMenu(props) {
     const [open, setOpen] = useState(props.isOpen);
 
-    const menuChunks = _.chunk(props.menuItems, Math.ceil(3));
+    const menuChunks = _.chunk(props.menuItems, Math.ceil(2));
 
     return (
         <>

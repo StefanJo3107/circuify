@@ -38,17 +38,21 @@ class Element {
     };
 
     checkSelection = (mousePos) => {
-        if (
-            mousePos.x >= this.position.x &&
-            mousePos.x <= this.position.x + cellSize * this.entireWidth &&
-            mousePos.y >= this.position.y &&
-            mousePos.y <= this.position.y + cellSize * this.entireHeight
-        ) {
+        if (this.mouseInsideElement(mousePos)) {
             this.state = elementState.Selected;
             return true;
         } else {
             return false;
         }
+    };
+
+    mouseInsideElement = (mousePos) => {
+        return (
+            mousePos.x >= this.position.x &&
+            mousePos.x <= this.position.x + cellSize * this.entireWidth &&
+            mousePos.y >= this.position.y &&
+            mousePos.y <= this.position.y + cellSize * this.entireHeight
+        );
     };
 
     checkSelectionInsideRect = (rectStart, rectEnd) => {

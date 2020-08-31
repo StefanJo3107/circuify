@@ -26,6 +26,8 @@ class Clock extends Element {
 
         this.setColor();
         rect(pos.x, pos.y, 2 * cellSize, 2 * cellSize);
+
+        stroke(0);
         if (this.state == elementState.Placing) {
             fill(255);
         } else if (this.outputs[0].getState() === true) {

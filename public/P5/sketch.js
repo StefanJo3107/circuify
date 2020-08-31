@@ -1,4 +1,4 @@
-let cellSize = 18;
+let cellSize = 22;
 let grid;
 
 let sineFactor = 0;
@@ -57,6 +57,7 @@ function RefreshCanvas() {
 
     showConnectionInProgress();
 
+    //showing connections
     if (connections != null) {
         for (let connection of connections) {
             connection.show();
@@ -64,6 +65,7 @@ function RefreshCanvas() {
         }
     }
 
+    //showing elements
     if (elements != null) {
         for (let i = 0; i < elements.length; i++) {
             elements[i].refreshPosition();
@@ -72,6 +74,7 @@ function RefreshCanvas() {
         }
     }
 
+    //drawing selection rect
     if (selectionInProgress && selectionRectEnd != null) {
         fill(60, 191, 214, 100);
         stroke(60, 191, 214);
@@ -115,6 +118,26 @@ function RefreshCanvas() {
         }
     }
 
+    //selection cursor
+    if (drag == null && !selectionInProgress) {
+        let mouseOverElement = false;
+        for (let i = 0; i < elements.length; i++) {
+            if (
+                elements[i].mouseInsideElement(
+                    grid.snapToGrid(createVector(mouseX, mouseY))
+                )
+            ) {
+                mouseOverElement = true;
+            }
+        }
+
+        if (mouseOverElement) {
+            cursor(HAND);
+        } else {
+            cursor(ARROW);
+        }
+    }
+
     sineFactor += 0.1;
 }
 
@@ -130,10 +153,21 @@ function mousePressed() {
                 grid.snapToGrid(createVector(mouseX, mouseY))
             );
 
+            //selected inside rect selection
             if (selected && previousState == elementState.Selected) {
                 unselectOthers = false;
             }
 
+            //selected element is button so it is pressed
+            if (selected && elements[i].constructor.name == "Button") {
+                elements[i].press();
+            }
+
+            if (selected && elements[i].constructor.name == "Switch") {
+                elements[i].invertOutput();
+            }
+
+            //element is selected and breaking from loop
             if (selected) {
                 dragStartPos = grid.snapToGrid(createVector(mouseX, mouseY));
                 selectedIndex = i;
@@ -141,6 +175,7 @@ function mousePressed() {
             }
         }
 
+        //unselecting elements that previously selected
         if (unselectOthers) {
             for (let i = 0; i < elements.length; i++) {
                 if (i != selectedIndex) {
@@ -149,6 +184,7 @@ function mousePressed() {
             }
         }
 
+        //starting the drag
         if (dragStartPos == null) {
             selectionRectStart = createVector(mouseX, mouseY);
             selectionRectEnd = null;
@@ -160,6 +196,8 @@ function mousePressed() {
 function mouseDragged() {
     if (mouseButton === LEFT && selectedOption.name == "SELECT") {
         if (dragStartPos != null) {
+            cursor("grab");
+
             dragEndPos = grid.snapToGrid(createVector(mouseX, mouseY));
 
             if (initialDragPos == null) initialDragPos = dragEndPos;
@@ -230,11 +268,19 @@ function mouseReleased() {
         selectionRectEnd = null;
     }
 
+    for (let i = 0; i < elements.length; i++) {
+        if (elements[i].constructor.name == "Button") {
+            elements[i].release();
+        }
+    }
+
     dragStartPos = null;
     dragEndPos = null;
     drag = null;
     selectionInProgress = false;
     initialDragPos = null;
+
+    cursor(ARROW);
 }
 
 function showConnectionInProgress() {
@@ -368,7 +414,7 @@ function mouseWheel(event) {
         }
 
         cellSize += delta;
-        cellSize = constrain(cellSize, 10, 30);
+        cellSize = constrain(cellSize, 10, 40);
     }
 }
 

@@ -12,6 +12,10 @@ body {
     box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.1);
 }
 
+.Title {
+    vertical-align: middle;
+}
+
 .sidebar-sticky {
     position: relative;
     top: 0;
