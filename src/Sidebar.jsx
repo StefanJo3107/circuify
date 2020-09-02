@@ -202,13 +202,11 @@ export default class Sidebar extends React.Component {
 
         const outputs = [
             {
-                image:
-                    "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/XNOR_ANSI.svg/150px-XNOR_ANSI.svg.png",
+                image: "../Images/Hexdigit.png",
                 name: "HEX DIGIT",
             },
             {
-                image:
-                    "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/XNOR_ANSI.svg/150px-XNOR_ANSI.svg.png",
+                image: "../Images/Lightbulb.png",
                 name: "LIGHT BULB",
             },
         ];
