@@ -84,19 +84,22 @@ class Nor extends Element {
 
     calculateOutput = () => {
         if (
-            (this.inputs[0].state == null && this.inputs[1].state == null) ||
-            (this.inputs[0].state == false && this.inputs[1].state == null) ||
-            (this.inputs[0].state == null && this.inputs[1].state == false)
+            (this.inputs[0].getState() == null &&
+                this.inputs[1].getState() == null) ||
+            (this.inputs[0].getState() == false &&
+                this.inputs[1].getState() == null) ||
+            (this.inputs[0].getState() == null &&
+                this.inputs[1].getState() == false)
         ) {
-            this.outputs[0].state == null;
+            this.outputs[0].setState(null);
         } else if (
-            this.inputs[0].state == true ||
-            this.inputs[1].state == true
+            this.inputs[0].getState() == true ||
+            this.inputs[1].getState() == true
         ) {
             this.outputs[0].setState(false);
         } else {
             this.outputs[0].setState(
-                !(this.inputs[0].state || this.inputs[1].state)
+                !(this.inputs[0].getState() || this.inputs[1].getState())
             );
         }
     };

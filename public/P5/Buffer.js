@@ -43,10 +43,10 @@ class Buffer extends Element {
     };
 
     calculateOutput = () => {
-        if (this.inputs[0].state == null) {
-            this.outputs[0].state == null;
+        if (this.inputs[0].getState() == null) {
+            this.outputs[0].setState(null);
         } else {
-            this.outputs[0].setState(this.inputs[0].state);
+            this.outputs[0].setState(this.inputs[0].getState());
         }
     };
 }

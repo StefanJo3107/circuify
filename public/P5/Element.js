@@ -14,16 +14,15 @@ class Element {
     }
 
     setColor = () => {
+        strokeWeight(2);
+
         if (this.state == elementState.Placed) {
-            strokeWeight(2);
             stroke(0);
             fill(255);
         } else if (this.state == elementState.Placing) {
-            strokeWeight(2);
             stroke("#75b79e");
             fill("#a7e9af");
         } else if (this.state == elementState.Selected) {
-            strokeWeight(2);
             stroke(60, 191, 214);
             fill(255);
         }

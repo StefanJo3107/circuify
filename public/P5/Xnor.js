@@ -95,11 +95,14 @@ class Xnor extends Element {
     };
 
     calculateOutput = () => {
-        if (this.inputs[0].state == null || this.inputs[1].state == null) {
-            this.outputs[0].state == null;
+        if (
+            this.inputs[0].getState() == null ||
+            this.inputs[1].getState() == null
+        ) {
+            this.outputs[0].setState(null);
         } else {
             this.outputs[0].setState(
-                !(this.inputs[0].state != this.inputs[1].state)
+                !(this.inputs[0].getState() != this.inputs[1].getState())
             );
         }
     };

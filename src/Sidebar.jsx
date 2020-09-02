@@ -136,28 +136,23 @@ export default class Sidebar extends React.Component {
 
         const inputs = [
             {
-                image:
-                    "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Buffer_ANSI.svg/150px-Buffer_ANSI.svg.png",
+                image: "../Images/True.png",
                 name: "TRUE",
             },
             {
-                image:
-                    "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Buffer_ANSI.svg/150px-Buffer_ANSI.svg.png",
+                image: "../Images/False.png",
                 name: "FALSE",
             },
             {
-                image:
-                    "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Buffer_ANSI.svg/150px-Buffer_ANSI.svg.png",
+                image: "../Images/Clock.png",
                 name: "CLOCK",
             },
             {
-                image:
-                    "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Buffer_ANSI.svg/150px-Buffer_ANSI.svg.png",
+                image: "../Images/Button.png",
                 name: "BUTTON",
             },
             {
-                image:
-                    "https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Buffer_ANSI.svg/150px-Buffer_ANSI.svg.png",
+                image: "../Images/Switch.png",
                 name: "SWITCH",
             },
         ];
@@ -205,6 +200,19 @@ export default class Sidebar extends React.Component {
             },
         ];
 
+        const outputs = [
+            {
+                image:
+                    "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/XNOR_ANSI.svg/150px-XNOR_ANSI.svg.png",
+                name: "HEX DIGIT",
+            },
+            {
+                image:
+                    "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/XNOR_ANSI.svg/150px-XNOR_ANSI.svg.png",
+                name: "LIGHT BULB",
+            },
+        ];
+
         return (
             <>
                 <Col md={3} lg={2} className="d-md-block bg-light sidebar">
@@ -227,6 +235,7 @@ export default class Sidebar extends React.Component {
                                 onClick={(name) =>
                                     this.setSelection(name, "INPUT")
                                 }
+                                imageWidth={52}
                             />
                             <CollapsableMenu
                                 isOpen={true}
@@ -239,7 +248,7 @@ export default class Sidebar extends React.Component {
                             <CollapsableMenu
                                 isOpen={true}
                                 menuName="Outputs"
-                                menuItems={gates}
+                                menuItems={outputs}
                                 onClick={(name) =>
                                     this.setSelection(name, "OUTPUT")
                                 }

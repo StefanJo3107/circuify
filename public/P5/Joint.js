@@ -8,6 +8,7 @@ class Joint {
         this.state = initialState;
         this.initialState = initialState;
         this.type = type;
+        console.log(initialState);
     }
 
     show = (pos, radius, radiusMouseOver, state) => {
@@ -58,8 +59,9 @@ class Joint {
         return this.state;
     };
 
-    resetState = (value) => {
+    resetState = () => {
         this.setState(this.initialState);
+        console.log("Current state:" + this.state);
     };
 
     selectJoint = () => {
