@@ -211,6 +211,13 @@ export default class Sidebar extends React.Component {
             },
         ];
 
+        const flipflops = [
+            {
+                image: "../Images/Hexdigit.png",
+                name: "SR Flip-Flop",
+            },
+        ];
+
         return (
             <>
                 <Col md={3} lg={2} className="d-md-block bg-light sidebar">
@@ -249,6 +256,14 @@ export default class Sidebar extends React.Component {
                                 menuItems={outputs}
                                 onClick={(name) =>
                                     this.setSelection(name, "OUTPUT")
+                                }
+                            />
+                            <CollapsableMenu
+                                isOpen={true}
+                                menuName="Flip-Flops"
+                                menuItems={flipflops}
+                                onClick={(name) =>
+                                    this.setSelection(name, "FLIP-FLOP")
                                 }
                             />
                         </ul>

@@ -191,6 +191,7 @@ function getPlacingElement() {
     };
     if (selectedOption.name != null && selectedOption.type != null) {
         selectedOption.name = selectedOption.name.replace(/\s+/g, "");
+        selectedOption.name = selectedOption.name.replace(/\W+/g, "");
         if (
             selectedOption.type != "TOOL" &&
             placingName != selectedOption.name.toTitleCase()
