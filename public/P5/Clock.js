@@ -80,7 +80,7 @@ class Clock extends Element {
         if (this.interval === undefined) {
             this.interval = setInterval(
                 () => this.outputs[0].setState(!this.outputs[0].getState()),
-                1000
+                500
             );
         }
     };

@@ -1,4 +1,4 @@
-class Srflipflop extends Element {
+class Jkflipflop extends Element {
     constructor() {
         super(5, 6, 3, 4);
         this.inputs = [
@@ -12,6 +12,8 @@ class Srflipflop extends Element {
             new Joint(null, jointType.OUTPUT),
             new Joint(null, jointType.OUTPUT),
         ];
+
+        this.inversed = false;
     }
 
     show = (pos, cellSize) => {
@@ -116,11 +118,11 @@ class Srflipflop extends Element {
         textSize(cellSize * 0.7);
         strokeWeight(0.5);
         fill(0);
-        text("S", pos.x + 1.1 * cellSize, pos.y + 2.2 * cellSize);
+        text("J", pos.x + 1.1 * cellSize, pos.y + 2.2 * cellSize);
         textSize(cellSize);
         text(">", pos.x + 0.95 * cellSize, pos.y + 3.4 * cellSize);
         textSize(cellSize * 0.7);
-        text("R", pos.x + 1.1 * cellSize, pos.y + 4.2 * cellSize);
+        text("K", pos.x + 1.1 * cellSize, pos.y + 4.2 * cellSize);
         text("Q", pos.x + 3.25 * cellSize, pos.y + 2.2 * cellSize);
         text("Q'", pos.x + 3.25 * cellSize, pos.y + 4.2 * cellSize);
         textSize(cellSize * 0.5);
@@ -155,12 +157,29 @@ class Srflipflop extends Element {
                     this.inputs[0].getState() == true &&
                     this.inputs[2].getState() == true
                 ) {
-                    this.outputs[0].setState(null);
-                    this.outputs[1].setState(null);
+                    if (
+                        this.outputs[0].getState() == null ||
+                        this.outputs[1].getState() == null
+                    ) {
+                        this.outputs[0].setState(null);
+                        this.outputs[1].setState(null);
+                    } else if (
+                        this.outputs[0].getState() == false &&
+                        this.outputs[1].getState() == false
+                    ) {
+                        this.outputs[0].setState(true);
+                        this.outputs[1].setState(false);
+                    } else if (this.inversed == false) {
+                        this.outputs[0].setState(!this.outputs[0].getState());
+                        this.outputs[1].setState(!this.outputs[0].getState());
+                        this.inversed = true;
+                    }
                 }
             } else if (this.inputs[1].getState() == null) {
                 this.outputs[0].setState(null);
                 this.outputs[1].setState(null);
+            } else {
+                this.inversed = false;
             }
         }
     };
@@ -176,6 +195,7 @@ class Srflipflop extends Element {
         ) {
             this.outputs[0].setState(null);
             this.outputs[1].setState(null);
+            this.inversed = true;
             return true;
         } else if (
             this.inputs[3].getState() == false &&
@@ -183,6 +203,7 @@ class Srflipflop extends Element {
         ) {
             this.outputs[0].setState(true);
             this.outputs[1].setState(null);
+            this.inversed = true;
             return true;
         } else if (
             this.inputs[3].getState() == null &&
@@ -190,6 +211,7 @@ class Srflipflop extends Element {
         ) {
             this.outputs[0].setState(null);
             this.outputs[1].setState(true);
+            this.inversed = true;
             return true;
         } else if (
             this.inputs[3].getState() == false &&
@@ -197,6 +219,7 @@ class Srflipflop extends Element {
         ) {
             this.outputs[0].setState(true);
             this.outputs[1].setState(true);
+            this.inversed = true;
             return true;
         } else if (
             this.inputs[3].getState() == true &&
@@ -204,6 +227,7 @@ class Srflipflop extends Element {
         ) {
             this.outputs[0].setState(false);
             this.outputs[1].setState(true);
+            this.inversed = true;
             return true;
         } else if (
             this.inputs[3].getState() == false &&
@@ -211,6 +235,7 @@ class Srflipflop extends Element {
         ) {
             this.outputs[0].setState(true);
             this.outputs[1].setState(false);
+            this.inversed = true;
             return true;
         }
 

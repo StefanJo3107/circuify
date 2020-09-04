@@ -250,6 +250,12 @@ function DeleteSelectedElements() {
         }
     }
 
+    if (elementsToRemove.length > 0) {
+        //removing connections in progress
+        selectedInput = null;
+        selectedOutput = null;
+    }
+
     _.remove(elements, (el) => {
         return _.includes(elementsToRemove, el);
     });
@@ -359,6 +365,9 @@ function mousePressed() {
                 dragStartPos = grid.snapToGrid(createVector(mouseX, mouseY));
                 selectedIndex = i;
                 break;
+            } else {
+                selectedInput = null;
+                selectedOutput = null;
             }
         }
 

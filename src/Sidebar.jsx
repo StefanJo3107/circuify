@@ -213,8 +213,20 @@ export default class Sidebar extends React.Component {
 
         const flipflops = [
             {
-                image: "../Images/Hexdigit.png",
-                name: "SR Flip-Flop",
+                image: "../Images/SRFlip-Flop.png",
+                name: "SR FLIP-FLOP",
+            },
+            {
+                image: "../Images/DFlip-Flop.png",
+                name: "D FLIP-FLOP",
+            },
+            {
+                image: "../Images/JKFlip-Flop.png",
+                name: "JK FLIP-FLOP",
+            },
+            {
+                image: "../Images/TFlip-Flop.png",
+                name: "T FLIP-FLOP",
             },
         ];
 
@@ -265,6 +277,7 @@ export default class Sidebar extends React.Component {
                                 onClick={(name) =>
                                     this.setSelection(name, "FLIP-FLOP")
                                 }
+                                imageWidth={70}
                             />
                         </ul>
                     </div>
