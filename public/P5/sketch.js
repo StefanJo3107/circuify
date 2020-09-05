@@ -365,9 +365,6 @@ function mousePressed() {
                 dragStartPos = grid.snapToGrid(createVector(mouseX, mouseY));
                 selectedIndex = i;
                 break;
-            } else {
-                selectedInput = null;
-                selectedOutput = null;
             }
         }
 

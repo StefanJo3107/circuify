@@ -202,7 +202,7 @@ export default class Sidebar extends React.Component {
 
         const outputs = [
             {
-                image: "../Images/Hexdigit.png",
+                image: "../Images/Hexdigit02.png",
                 name: "HEX DIGIT",
             },
             {

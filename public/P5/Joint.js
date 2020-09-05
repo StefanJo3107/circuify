@@ -17,7 +17,7 @@ class Joint {
 
         if (state == elementState.Placed || state == elementState.Selected) {
             stroke(0);
-            strokeWeight(2);
+            //strokeWeight(2);
             fill(255);
         }
 
