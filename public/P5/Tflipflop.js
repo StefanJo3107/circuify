@@ -107,15 +107,16 @@ class Tflipflop extends Element {
         textSize(cellSize * 0.7);
         strokeWeight(0.5);
         fill(0);
-        text("T", pos.x + 1.1 * cellSize, pos.y + 2.2 * cellSize);
-        textSize(cellSize);
-        text(">", pos.x + 0.95 * cellSize, pos.y + 4.4 * cellSize);
+        textFont(letterFont);
+        text("T", pos.x + 1.12 * cellSize, pos.y + 2.2 * cellSize);
+        textSize(cellSize * 1.2);
+        text(">", pos.x + 0.98 * cellSize, pos.y + 4.4 * cellSize);
         textSize(cellSize * 0.7);
-        text("Q", pos.x + 3.25 * cellSize, pos.y + 2.2 * cellSize);
-        text("Q'", pos.x + 3.25 * cellSize, pos.y + 4.2 * cellSize);
+        text("Q", pos.x + 3.3 * cellSize, pos.y + 2.2 * cellSize);
+        text("Q'", pos.x + 3.3 * cellSize, pos.y + 4.2 * cellSize);
         textSize(cellSize * 0.5);
-        text("PRE'", pos.x + 1.9 * cellSize, pos.y + 1.6 * cellSize);
-        text("CLR'", pos.x + 1.9 * cellSize, pos.y + 4.8 * cellSize);
+        text("PRE'", pos.x + 1.95 * cellSize, pos.y + 1.6 * cellSize);
+        text("CLR'", pos.x + 1.95 * cellSize, pos.y + 4.8 * cellSize);
 
         this.setColor();
     };

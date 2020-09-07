@@ -9,7 +9,10 @@ let placingElement = null;
 let placingName = "";
 let placingType = "";
 let slider;
-let elements;
+let elements = [];
+
+let circuits = [];
+let currentCircuitIndex = 0;
 
 let selectedInput = null;
 let selectedOutput = null;
@@ -26,21 +29,34 @@ let selectionRectStart = null;
 let selectionRectEnd = null;
 let selectionInProgress = false;
 
+let letterFont;
+
 selected = {
     name: sessionStorage.getItem("selectedOption"),
     type: sessionStorage.getItem("selectedType"),
 };
 
+let holder;
+let tabs;
+
 function setup() {
-    let holder = document.getElementById("canvasHolder");
-    let canvas = createCanvas(holder.offsetWidth, windowHeight - 50, P2D);
+    holder = document.getElementById("canvasHolder");
+    tabs = document.getElementsByClassName("nav-tabs")[0];
+
+    let canvas = createCanvas(
+        holder.offsetWidth,
+        windowHeight - 50 - tabs.offsetHeight,
+        P2D
+    );
     canvas.parent("canvasHolder");
 
     sessionStorage.setItem("selectedOption", "SELECT");
     sessionStorage.setItem("selectedType", "TOOL");
 
     grid = new Grid(220);
-    elements = [];
+    letterFont = loadFont("../BAHNSCHRIFT.TTF");
+
+    circuits.push(new Circuit("Main"));
 }
 
 function draw() {
@@ -48,6 +64,10 @@ function draw() {
 }
 
 function RefreshCanvas() {
+    if (height != windowHeight - 50 - tabs.offsetHeight) {
+        resizeCanvas(holder.offsetWidth, windowHeight - 50 - tabs.offsetHeight);
+    }
+
     background(235);
     grid.show();
 
@@ -297,11 +317,7 @@ function mouseInsideCanvas() {
 }
 
 function windowResized() {
-    let holder = document.getElementById("canvasHolder");
-    resizeCanvas(holder.offsetWidth, windowHeight - 50);
-
-    background(248);
-    grid.show();
+    resizeCanvas(holder.offsetWidth, windowHeight - 50 - tabs.offsetHeight);
 }
 
 function DrawGrid() {

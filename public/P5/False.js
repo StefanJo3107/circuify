@@ -26,6 +26,7 @@ class False extends Element {
         rect(pos.x, pos.y, 2 * cellSize, 2 * cellSize);
         textSize(cellSize * 1.8);
         fill(0);
+        textFont("Helvetica");
         text("0", pos.x + 0.5 * cellSize, pos.y + 1.65 * cellSize);
         this.setColor();
     };
