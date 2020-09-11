@@ -8,7 +8,18 @@ class Joint {
         this.state = initialState;
         this.initialState = initialState;
         this.type = type;
+        this.jointID = jointID;
+        this.enabled = true;
+        jointID++;
     }
+
+    copyJoint = (joint) => {
+        this.state = joint.state;
+        this.initialState = joint.initialState;
+        this.type = joint.type;
+        this.jointID = jointID;
+        jointID++;
+    };
 
     show = (pos, radius, radiusMouseOver, state) => {
         this.position = pos;

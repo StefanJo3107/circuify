@@ -1,6 +1,8 @@
 let cellSize = 22;
 let grid;
 
+let jointID = 0;
+
 let sineFactor = 0;
 
 let selectedOption;
@@ -8,17 +10,12 @@ let selectedOption;
 let placingElement = null;
 let placingName = "";
 let placingType = "";
-let slider;
-let elements = [];
 
 let circuits = [];
 let currentCircuitIndex = 0;
 
 let selectedInput = null;
 let selectedOutput = null;
-
-let connections = [];
-let usedInputs = [];
 
 let dragStartPos = null;
 let dragEndPos = null;
@@ -55,8 +52,6 @@ function setup() {
 
     grid = new Grid(220);
     letterFont = loadFont("../BAHNSCHRIFT.TTF");
-
-    circuits.push(new Circuit("Main"));
 }
 
 function draw() {
@@ -68,30 +63,15 @@ function RefreshCanvas() {
         resizeCanvas(holder.offsetWidth, windowHeight - 50 - tabs.offsetHeight);
     }
 
+    getCircuits();
+
     background(235);
     grid.show();
 
     getPlacingElement();
     placeElement();
 
-    showConnectionInProgress();
-
-    //showing connections
-    if (connections != null) {
-        for (let connection of connections) {
-            connection.show();
-            connection.updateValues();
-        }
-    }
-
-    //showing elements
-    if (elements != null) {
-        for (let i = 0; i < elements.length; i++) {
-            elements[i].refreshPosition();
-            elements[i].show(elements[i].getPosition(), cellSize);
-            elements[i].calculateOutput();
-        }
-    }
+    circuits[currentCircuitIndex].showCircuit();
 
     //drawing selection rect
     if (selectionInProgress && selectionRectEnd != null) {
@@ -140,9 +120,13 @@ function RefreshCanvas() {
     //selection cursor
     if (drag == null && !selectionInProgress) {
         let mouseOverElement = false;
-        for (let i = 0; i < elements.length; i++) {
+        for (
+            let i = 0;
+            i < circuits[currentCircuitIndex].elements.length;
+            i++
+        ) {
             if (
-                elements[i].mouseInsideElement(
+                circuits[currentCircuitIndex].elements[i].mouseInsideElement(
                     grid.snapToGrid(createVector(mouseX, mouseY))
                 )
             ) {
@@ -160,46 +144,47 @@ function RefreshCanvas() {
     sineFactor += 0.1;
 }
 
-function showConnectionInProgress() {
-    if (selectedInput != null && selectedOutput == null) {
-        stroke(0);
-        strokeWeight(4);
-        noFill();
-        bezier(
-            selectedInput.position.x,
-            selectedInput.position.y,
-            selectedInput.position.x - 3 * cellSize,
-            selectedInput.position.y,
-            mouseX + 3 * cellSize,
-            mouseY,
-            mouseX,
-            mouseY
-        );
-    } else if (selectedInput == null && selectedOutput != null) {
-        stroke(0);
-        strokeWeight(4);
-        noFill();
-        bezier(
-            selectedOutput.position.x,
-            selectedOutput.position.y,
-            selectedOutput.position.x + 3 * cellSize,
-            selectedOutput.position.y,
-            mouseX - 3 * cellSize,
-            mouseY,
-            mouseX,
-            mouseY
-        );
-    } else if (selectedInput != null && selectedOutput != null) {
-        connections.push(new Connection(selectedInput, selectedOutput));
-        usedInputs.push(selectedInput);
-        selectedInput = null;
-        selectedOutput = null;
+function getCircuits() {
+    let circuitsStr = sessionStorage.getItem("circuits");
+    let circuitNames = circuitsStr.split(",");
+
+    let circuitsToRemove = [];
+    let includedNames = [];
+
+    for (let i = 0; i < circuits.length; i++) {
+        if (!circuitNames.includes(circuits[i].name)) {
+            circuitsToRemove.push(circuits[i]);
+        } else {
+            includedNames.push(circuits[i].name);
+        }
+    }
+
+    _.remove(circuits, (c) => {
+        return _.includes(circuitsToRemove, c);
+    });
+
+    _.remove(circuitNames, (c) => {
+        return _.includes(includedNames, c);
+    });
+
+    for (let i = 0; i < circuitNames.length; i++) {
+        circuits.push(new Circuit(circuitNames[i]));
+    }
+
+    let currentCircuit = sessionStorage.getItem("currentCircuit");
+
+    for (let i = 0; i < circuits.length; i++) {
+        if (circuits[i].name === currentCircuit) {
+            currentCircuitIndex = i;
+            break;
+        }
     }
 }
 
 function inputIsUsed(input) {
-    for (let i = 0; i < usedInputs.length; i++) {
-        if (_.isEqual(input, usedInputs[i])) return true;
+    for (let i = 0; i < circuits[currentCircuitIndex].usedInputs.length; i++) {
+        if (_.isEqual(input, circuits[currentCircuitIndex].usedInputs[i]))
+            return true;
     }
     return false;
 }
@@ -212,14 +197,16 @@ function getPlacingElement() {
     if (selectedOption.name != null && selectedOption.type != null) {
         selectedOption.name = selectedOption.name.replace(/\s+/g, "");
         selectedOption.name = selectedOption.name.replace(/\W+/g, "");
+
         if (
             selectedOption.type != "TOOL" &&
+            selectedOption.type != "CIRCUIT" &&
             placingName != selectedOption.name.toTitleCase()
         ) {
             placingElement = eval(
                 "new " + selectedOption.name.toTitleCase() + "()"
             );
-            placingName = selectedOption.name;
+            placingName = selectedOption.name.toTitleCase();
             placingType = selectedOption.type;
 
             selectedInput = null;
@@ -231,10 +218,43 @@ function getPlacingElement() {
 
             selectedInput = null;
             selectedOutput = null;
+        } else if (
+            selectedOption.type == "CIRCUIT" &&
+            placingName != selectedOption.name.toTitleCase()
+        ) {
+            let circuit = null;
+            for (let i = 0; i < circuits.length; i++) {
+                if (
+                    circuits[i].name ===
+                    sessionStorage.getItem("selectedOption")
+                ) {
+                    circuit = circuits[i];
+                    break;
+                }
+            }
+            if (circuit != null) {
+                placingElement = new IntegratedCircuit();
+                placingElement.addCircuit(circuit);
+                placingName = selectedOption.name.toTitleCase();
+                placingType = selectedOption.type;
+
+                selectedInput = null;
+                selectedOutput = null;
+            }
         }
     }
 }
-
+function clone(instance) {
+    return Object.assign(
+        Object.create(
+            // Set the prototype of the new object to the prototype of the instance.
+            // Used to allow new object behave like class instance.
+            Object.getPrototypeOf(instance)
+        ),
+        // Prevent shallow copies of nested structures like arrays, etc
+        JSON.parse(JSON.stringify(instance))
+    );
+}
 function placeElement() {
     if (placingElement != null && mouseInsideCanvas()) {
         placingElement.show(
@@ -252,64 +272,12 @@ function placeElement() {
                 placingElement
             );
             clone.setElementState(elementState.Placed);
-            elements.push(clone);
+            circuits[currentCircuitIndex].addElement(clone);
             placingElement = null;
             sessionStorage.setItem("selectedOption", "SELECT");
             sessionStorage.setItem("selectedType", "TOOL");
         }
     }
-}
-
-function DeleteSelectedElements() {
-    let elementsToRemove = [];
-
-    for (let i = 0; i < elements.length; i++) {
-        if (elements[i].getState() == elementState.Selected) {
-            RemoveElementConnections(i);
-            elementsToRemove.push(elements[i]);
-        }
-    }
-
-    if (elementsToRemove.length > 0) {
-        //removing connections in progress
-        selectedInput = null;
-        selectedOutput = null;
-    }
-
-    _.remove(elements, (el) => {
-        return _.includes(elementsToRemove, el);
-    });
-}
-
-function RemoveElementConnections(index) {
-    let inputs = [];
-    let outputs = [];
-    for (let i = 0; i < elements[index].inputs.length; i++) {
-        inputs.push(elements[index].inputs[i]);
-    }
-
-    for (let i = 0; i < elements[index].outputs.length; i++) {
-        outputs.push(elements[index].outputs[i]);
-    }
-
-    deletedInputs = [];
-
-    _.remove(connections, (conn) => {
-        if (
-            _.includes(inputs, conn.input) ||
-            _.includes(outputs, conn.output)
-        ) {
-            conn.input.resetState();
-            deletedInputs.push(conn.input);
-            return true;
-        }
-
-        return false;
-    });
-
-    _.remove(usedInputs, (inp) => {
-        return _.includes(deletedInputs, inp);
-    });
 }
 
 function mouseInsideCanvas() {
@@ -320,23 +288,6 @@ function windowResized() {
     resizeCanvas(holder.offsetWidth, windowHeight - 50 - tabs.offsetHeight);
 }
 
-function DrawGrid() {
-    stroke(220);
-    for (let i = 0; i < width; i += cellSize) {
-        line(i, 0, i, height);
-    }
-
-    for (let i = 0; i < height; i += cellSize) {
-        line(0, i, width, i);
-    }
-}
-
-String.prototype.toTitleCase = function () {
-    return this.replace(/\w\S*/g, function (txt) {
-        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-    });
-};
-
 //_____________Input_________________
 
 function keyPressed() {
@@ -346,7 +297,7 @@ function keyPressed() {
     }
 
     if (keyCode == DELETE) {
-        DeleteSelectedElements();
+        circuits[currentCircuitIndex].deleteSelectedElements();
     }
 }
 
@@ -355,12 +306,18 @@ function mousePressed() {
         let unselectOthers = true;
         let selectedIndex = -1;
         //starting in reverse because of drawing order of elements
-        for (let i = elements.length - 1; i >= 0; i--) {
-            elements[i].updateJoints();
-            let previousState = elements[i].getState();
-            let selected = elements[i].checkSelection(
-                grid.snapToGrid(createVector(mouseX, mouseY))
-            );
+        for (
+            let i = circuits[currentCircuitIndex].elements.length - 1;
+            i >= 0;
+            i--
+        ) {
+            circuits[currentCircuitIndex].elements[i].updateJoints();
+            let previousState = circuits[currentCircuitIndex].elements[
+                i
+            ].getState();
+            let selected = circuits[currentCircuitIndex].elements[
+                i
+            ].checkSelection(grid.snapToGrid(createVector(mouseX, mouseY)));
 
             //selected inside rect selection
             if (selected && previousState == elementState.Selected) {
@@ -368,12 +325,20 @@ function mousePressed() {
             }
 
             //selected element is button so it is pressed
-            if (selected && elements[i].constructor.name == "Button") {
-                elements[i].press();
+            if (
+                selected &&
+                circuits[currentCircuitIndex].elements[i].constructor.name ===
+                    "Button"
+            ) {
+                circuits[currentCircuitIndex].elements[i].press();
             }
 
-            if (selected && elements[i].constructor.name == "Switch") {
-                elements[i].invertOutput();
+            if (
+                selected &&
+                circuits[currentCircuitIndex].elements[i].constructor.name ===
+                    "Switch"
+            ) {
+                circuits[currentCircuitIndex].elements[i].invertOutput();
             }
 
             //element is selected and breaking from loop
@@ -386,9 +351,13 @@ function mousePressed() {
 
         //unselecting elements that previously selected
         if (unselectOthers) {
-            for (let i = 0; i < elements.length; i++) {
+            for (
+                let i = 0;
+                i < circuits[currentCircuitIndex].elements.length;
+                i++
+            ) {
                 if (i != selectedIndex) {
-                    elements[i].unselect();
+                    circuits[currentCircuitIndex].elements[i].unselect();
                 }
             }
         }
@@ -432,17 +401,32 @@ function mouseDragged() {
                 else totalDrag.y = -abs(drag.y - currentDrag.y);
             }
 
-            for (let i = 0; i < elements.length; i++) {
-                if (elements[i].getState() == elementState.Selected) {
-                    elements[i].setPosition(
+            for (
+                let i = 0;
+                i < circuits[currentCircuitIndex].elements.length;
+                i++
+            ) {
+                if (
+                    circuits[currentCircuitIndex].elements[i].getState() ==
+                    elementState.Selected
+                ) {
+                    circuits[currentCircuitIndex].elements[i].setPosition(
                         createVector(
-                            elements[i].getPosition().x + totalDrag.x,
-                            elements[i].getPosition().y + totalDrag.y
+                            circuits[currentCircuitIndex].elements[
+                                i
+                            ].getPosition().x + totalDrag.x,
+                            circuits[currentCircuitIndex].elements[
+                                i
+                            ].getPosition().y + totalDrag.y
                         ),
                         grid.posToCell(
                             createVector(
-                                elements[i].getPosition().x + totalDrag.x,
-                                elements[i].getPosition().y + totalDrag.y
+                                circuits[currentCircuitIndex].elements[
+                                    i
+                                ].getPosition().x + totalDrag.x,
+                                circuits[currentCircuitIndex].elements[
+                                    i
+                                ].getPosition().y + totalDrag.y
                             )
                         )
                     );
@@ -465,9 +449,13 @@ function mouseDragged() {
 
 function mouseReleased() {
     if (selectionRectEnd != null && selectionRectStart != null) {
-        for (let i = 0; i < elements.length; i++) {
-            elements[i].updateJoints();
-            elements[i].checkSelectionInsideRect(
+        for (
+            let i = 0;
+            i < circuits[currentCircuitIndex].elements.length;
+            i++
+        ) {
+            circuits[currentCircuitIndex].elements[i].updateJoints();
+            circuits[currentCircuitIndex].elements[i].checkSelectionInsideRect(
                 selectionRectStart,
                 selectionRectEnd
             );
@@ -477,9 +465,12 @@ function mouseReleased() {
         selectionRectEnd = null;
     }
 
-    for (let i = 0; i < elements.length; i++) {
-        if (elements[i].constructor.name == "Button") {
-            elements[i].release();
+    for (let i = 0; i < circuits[currentCircuitIndex].elements.length; i++) {
+        if (
+            circuits[currentCircuitIndex].elements[i].constructor.name ==
+            "Button"
+        ) {
+            circuits[currentCircuitIndex].elements[i].release();
         }
     }
 
@@ -505,3 +496,11 @@ function mouseWheel(event) {
         cellSize = constrain(cellSize, 10, 40);
     }
 }
+
+//__________________________________________
+
+String.prototype.toTitleCase = function () {
+    return this.replace(/\w\S*/g, function (txt) {
+        return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+    });
+};

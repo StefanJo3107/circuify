@@ -9,6 +9,7 @@ import _ from "lodash";
 import { Icon } from "@iconify/react";
 import arrowsExpand from "@iconify/icons-bi/arrows-expand";
 import arrowsCollapse from "@iconify/icons-bi/arrows-collapse";
+import { tabsComponent, tabs } from "./Tabs.jsx";
 
 export let selectedOption = { option: "SELECT", type: "TOOL" };
 
@@ -230,6 +231,34 @@ export default class Sidebar extends React.Component {
             },
         ];
 
+        const circuits = [];
+        let currentCircuit = sessionStorage.getItem("currentCircuit");
+        for (let i = 1; i < tabs.length; i++) {
+            if (tabs[i] != currentCircuit) {
+                circuits.push({
+                    image: "../Images/IntegratedCircuit.png",
+                    name: tabs[i],
+                });
+            }
+        }
+
+        let circuitMenu;
+        if (circuits.length > 0) {
+            circuitMenu = (
+                <CollapsableMenu
+                    isOpen={true}
+                    menuName="Integrated Circuits"
+                    menuItems={circuits}
+                    onClick={(name) => {
+                        this.setSelection(name, "CIRCUIT");
+                    }}
+                    imageWidth={70}
+                />
+            );
+        } else {
+            circuitMenu = <></>;
+        }
+
         return (
             <>
                 <Col md={3} lg={2} className="d-md-block bg-light sidebar">
@@ -274,11 +303,12 @@ export default class Sidebar extends React.Component {
                                 isOpen={true}
                                 menuName="Flip-Flops"
                                 menuItems={flipflops}
-                                onClick={(name) =>
-                                    this.setSelection(name, "FLIP-FLOP")
-                                }
+                                onClick={(name) => {
+                                    this.setSelection(name, "FLIP-FLOP");
+                                }}
                                 imageWidth={70}
                             />
+                            {circuitMenu}
                         </ul>
                     </div>
                 </Col>

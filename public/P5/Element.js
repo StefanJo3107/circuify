@@ -13,6 +13,33 @@ class Element {
         this.state = elementState.Placing;
     }
 
+    copyElement(element) {
+        this.entireWidth = element.entireWidth;
+        this.entireHeight = element.entireHeight;
+        this.elementWidth = element.elementWidth;
+        this.elementHeight = element.elementHeight;
+        this.state = element.state;
+
+        this.inputs = [];
+        for (let i = 0; i < element.inputs.length; i++) {
+            this.inputs.push(new Joint(null, null));
+            this.inputs[i].copyJoint(element.inputs[i]);
+        }
+
+        this.outputs = [];
+        for (let i = 0; i < element.outputs.length; i++) {
+            this.outputs.push(new Joint(null, null));
+            this.outputs[i].copyJoint(element.outputs[i]);
+        }
+
+        this.inversed = element.inversed;
+        if (element.constructor.name === "IntegratedCircuit") {
+            this.circuit = element.circuit;
+            this.workingCircuit = new Circuit("");
+            this.workingCircuit.copyCircuit(this.circuit);
+        }
+    }
+
     setColor = () => {
         //strokeWeight(4);
         strokeWeight(map(cellSize, 10, 40, 1, 4));

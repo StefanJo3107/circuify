@@ -4,6 +4,13 @@ class Connection {
         this.output = output;
     }
 
+    getInput = () => {
+        return this.input;
+    };
+    getOutput = () => {
+        return this.output;
+    };
+
     show() {
         if (this.output.state == null) {
             stroke(

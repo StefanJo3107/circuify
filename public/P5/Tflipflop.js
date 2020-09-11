@@ -121,6 +121,10 @@ class Tflipflop extends Element {
         this.setColor();
     };
 
+    getInversed = () => {
+        return this.inversed;
+    };
+
     calculateOutput = () => {
         if (!this.checkPresetAndClear()) {
             if (this.inputs[1].getState() == true) {
