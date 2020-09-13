@@ -5,7 +5,7 @@ class Grid {
 
     show() {
         stroke(this.strokeColor);
-        strokeWeight(map(cellSize, 10, 40, 1, 4));
+        strokeWeight(map(cellSize, minZoom, maxZoom, 1, 4));
 
         for (let i = 0; i < width; i += cellSize) {
             line(i, 0, i, height);

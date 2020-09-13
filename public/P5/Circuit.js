@@ -159,7 +159,7 @@ class Circuit {
     showConnectionInProgress = () => {
         if (selectedInput != null && selectedOutput == null) {
             stroke(0);
-            strokeWeight(4);
+            strokeWeight(map(cellSize, minZoom, maxZoom, 2, 6));
             noFill();
             bezier(
                 selectedInput.position.x,
@@ -173,7 +173,7 @@ class Circuit {
             );
         } else if (selectedInput == null && selectedOutput != null) {
             stroke(0);
-            strokeWeight(4);
+            strokeWeight(map(cellSize, minZoom, maxZoom, 2, 6));
             noFill();
             bezier(
                 selectedOutput.position.x,

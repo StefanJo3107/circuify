@@ -42,7 +42,7 @@ class Element {
 
     setColor = () => {
         //strokeWeight(4);
-        strokeWeight(map(cellSize, 10, 40, 1, 4));
+        strokeWeight(map(cellSize, minZoom, maxZoom, 1, 4));
 
         if (this.state == elementState.Placed) {
             stroke(0);

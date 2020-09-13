@@ -1,6 +1,9 @@
 let cellSize = 22;
 let grid;
 
+let minZoom = 10;
+let maxZoom = 40;
+
 let jointID = 0;
 
 let sineFactor = 0;
@@ -493,7 +496,7 @@ function mouseWheel(event) {
         }
 
         cellSize += delta;
-        cellSize = constrain(cellSize, 10, 40);
+        cellSize = constrain(cellSize, minZoom, maxZoom);
     }
 }
 

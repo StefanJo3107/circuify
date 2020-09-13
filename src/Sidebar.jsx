@@ -210,6 +210,10 @@ export default class Sidebar extends React.Component {
                 image: "../Images/Lightbulb.png",
                 name: "LIGHT BULB",
             },
+            {
+                image: "../Images/Oscilloscope.png",
+                name: "OSCILLOSCOPE",
+            },
         ];
 
         const flipflops = [
@@ -231,10 +235,21 @@ export default class Sidebar extends React.Component {
             },
         ];
 
+        const plexers = [
+            {
+                image: "../Images/Multiplexer.png",
+                name: "MUX",
+            },
+            {
+                image: "../Images/Demultiplexer.png",
+                name: "DEMUX",
+            },
+        ];
+
         const circuits = [];
         let currentCircuit = sessionStorage.getItem("currentCircuit");
         for (let i = 1; i < tabs.length; i++) {
-            if (tabs[i] != currentCircuit) {
+            if (tabs[i] !== currentCircuit) {
                 circuits.push({
                     image: "../Images/IntegratedCircuit.png",
                     name: tabs[i],
@@ -281,7 +296,7 @@ export default class Sidebar extends React.Component {
                                 onClick={(name) =>
                                     this.setSelection(name, "INPUT")
                                 }
-                                imageWidth={52}
+                                imageWidth={55}
                             />
                             <CollapsableMenu
                                 isOpen={true}
@@ -290,6 +305,7 @@ export default class Sidebar extends React.Component {
                                 onClick={(name) =>
                                     this.setSelection(name, "GATE")
                                 }
+                                imageWidth={55}
                             />
                             <CollapsableMenu
                                 isOpen={true}
@@ -298,6 +314,7 @@ export default class Sidebar extends React.Component {
                                 onClick={(name) =>
                                     this.setSelection(name, "OUTPUT")
                                 }
+                                imageWidth={55}
                             />
                             <CollapsableMenu
                                 isOpen={true}
@@ -305,6 +322,16 @@ export default class Sidebar extends React.Component {
                                 menuItems={flipflops}
                                 onClick={(name) => {
                                     this.setSelection(name, "FLIP-FLOP");
+                                }}
+                                imageWidth={70}
+                            />
+
+                            <CollapsableMenu
+                                isOpen={true}
+                                menuName="Plexers"
+                                menuItems={plexers}
+                                onClick={(name) => {
+                                    this.setSelection(name, "PLEXER");
                                 }}
                                 imageWidth={70}
                             />

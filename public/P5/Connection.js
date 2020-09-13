@@ -31,7 +31,7 @@ class Connection {
                 )
             );
         }
-        strokeWeight(4);
+        strokeWeight(map(cellSize, minZoom, maxZoom, 2, 6));
         noFill();
         bezier(
             this.output.position.x,
