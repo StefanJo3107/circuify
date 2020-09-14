@@ -53,6 +53,11 @@ class Joint {
             stroke(214, 15, 15);
         }
 
+        if (selectedOption.name.toLowerCase() === "removewire") {
+            stroke(0);
+            fill(255);
+        }
+
         if (
             (state == elementState.Placed || state == elementState.Selected) &&
             this.mouseInsideCircle(pos, radius)

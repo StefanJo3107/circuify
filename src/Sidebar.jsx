@@ -39,7 +39,12 @@ function SidebarOption(props) {
                     className="text-center"
                     style={{ color: "black" }}
                 >
-                    {props.name}
+                    <span
+                        className="d-inline-block text-center"
+                        style={{ maxWidth: 100, wordWrap: "break-word" }}
+                    >
+                        {props.name}
+                    </span>
                 </Figure.Caption>
             </Figure>
         </Button>
@@ -133,6 +138,10 @@ export default class Sidebar extends React.Component {
                 image: "../Images/Cursor.png",
                 name: "SELECT",
             },
+            {
+                image: "../Images/DeleteWire.png",
+                name: "REMOVE WIRE",
+            },
         ];
 
         const inputs = [
@@ -203,12 +212,12 @@ export default class Sidebar extends React.Component {
 
         const outputs = [
             {
-                image: "../Images/Hexdigit02.png",
-                name: "HEX DIGIT",
-            },
-            {
                 image: "../Images/Lightbulb.png",
                 name: "LIGHT BULB",
+            },
+            {
+                image: "../Images/Hexdigit02.png",
+                name: "HEX DIGIT",
             },
             {
                 image: "../Images/Oscilloscope.png",
@@ -287,7 +296,7 @@ export default class Sidebar extends React.Component {
                                 onClick={(name) =>
                                     this.setSelection(name, "TOOL")
                                 }
-                                imageWidth={40}
+                                imageWidth={45}
                             />
                             <CollapsableMenu
                                 isOpen={true}

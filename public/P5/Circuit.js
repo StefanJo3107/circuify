@@ -99,6 +99,8 @@ class Circuit {
             _.includes(connectionsToDelete, conn);
         });
 
+        this.showConnectionRemovalInProgress();
+
         //showing elements
         if (this.elements != null) {
             //let icElements = [];
@@ -157,6 +159,8 @@ class Circuit {
     };
 
     showConnectionInProgress = () => {
+        if (selectedOption.name.toLowerCase() !== "select") return;
+
         if (selectedInput != null && selectedOutput == null) {
             stroke(0);
             strokeWeight(map(cellSize, minZoom, maxZoom, 2, 6));
@@ -190,6 +194,59 @@ class Circuit {
                 new Connection(selectedInput, selectedOutput)
             );
             this.usedInputs.push(selectedInput);
+            selectedInput = null;
+            selectedOutput = null;
+        }
+    };
+
+    showConnectionRemovalInProgress = () => {
+        if (selectedOption.name.toLowerCase() !== "removewire") return;
+
+        if (selectedInput != null && selectedOutput == null) {
+            stroke(240, 72, 72);
+            strokeWeight(map(cellSize, minZoom, maxZoom, 2, 6));
+            noFill();
+            bezier(
+                selectedInput.position.x,
+                selectedInput.position.y,
+                selectedInput.position.x - 3 * cellSize,
+                selectedInput.position.y,
+                mouseX + 3 * cellSize,
+                mouseY,
+                mouseX,
+                mouseY
+            );
+        } else if (selectedInput == null && selectedOutput != null) {
+            stroke(240, 72, 72);
+            strokeWeight(map(cellSize, minZoom, maxZoom, 2, 6));
+            noFill();
+            bezier(
+                selectedOutput.position.x,
+                selectedOutput.position.y,
+                selectedOutput.position.x + 3 * cellSize,
+                selectedOutput.position.y,
+                mouseX - 3 * cellSize,
+                mouseY,
+                mouseX,
+                mouseY
+            );
+        } else if (selectedInput != null && selectedOutput != null) {
+            let connToRemove = [];
+            for (let i = 0; i < this.connections.length; i++) {
+                if (
+                    this.connections[i].input.jointID ==
+                        selectedInput.jointID &&
+                    this.connections[i].output.jointID == selectedOutput.jointID
+                )
+                    connToRemove.push(this.connections[i]);
+            }
+            _.remove(this.connections, (conn) => {
+                return _.includes(connToRemove, conn);
+            });
+            _.remove(this.usedInputs, (inp) => {
+                return inp.jointID === selectedInput.jointID;
+            });
+            selectedInput.resetState();
             selectedInput = null;
             selectedOutput = null;
         }

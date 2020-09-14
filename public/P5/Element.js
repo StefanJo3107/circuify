@@ -135,6 +135,24 @@ class Element {
         }
     };
 
+    updateJointsRemoval = () => {
+        if (selectedInput == null) {
+            for (let i = 0; i < this.inputs.length; i++) {
+                if (this.inputs[i].mouseInsideCircle()) {
+                    this.inputs[i].selectJoint();
+                }
+            }
+        }
+
+        if (selectedOutput == null) {
+            for (let i = 0; i < this.outputs.length; i++) {
+                if (this.outputs[i].mouseInsideCircle()) {
+                    this.outputs[i].selectJoint();
+                }
+            }
+        }
+    };
+
     refreshPosition = () => {
         this.position = grid.cellToPos(this.cell);
     };

@@ -305,7 +305,7 @@ function keyPressed() {
 }
 
 function mousePressed() {
-    if (mouseButton === LEFT && selectedOption.name == "SELECT") {
+    if (mouseButton === LEFT && selectedOption.name.toLowerCase() == "select") {
         let unselectOthers = true;
         let selectedIndex = -1;
         //starting in reverse because of drawing order of elements
@@ -370,6 +370,17 @@ function mousePressed() {
             selectionRectStart = createVector(mouseX, mouseY);
             selectionRectEnd = null;
             selectionInProgress = true;
+        }
+    } else if (
+        mouseButton === LEFT &&
+        selectedOption.name.toLowerCase() == "removewire"
+    ) {
+        for (
+            let i = circuits[currentCircuitIndex].elements.length - 1;
+            i >= 0;
+            i--
+        ) {
+            circuits[currentCircuitIndex].elements[i].updateJointsRemoval();
         }
     }
 }
