@@ -6,6 +6,7 @@ import "./App.css";
 import Navbar from "./Navbar.jsx";
 import Sidebar from "./Sidebar.jsx";
 import Tabs from "./Tabs.jsx";
+import PropertyBox from "./PropertyBox.jsx";
 
 class App extends React.Component {
     render() {
@@ -27,6 +28,7 @@ class App extends React.Component {
                             ></Tabs>
                         </div>
                     </Row>
+                    <PropertyBox />
                 </Container>
             </>
         );

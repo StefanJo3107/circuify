@@ -108,7 +108,7 @@ function CollapsableMenu(props) {
 
 export default class Sidebar extends React.Component {
     constructor(props) {
-        super(props);
+        super();
         this.state = { refresh: false };
     }
 
@@ -285,7 +285,11 @@ export default class Sidebar extends React.Component {
 
         return (
             <>
-                <Col md={3} lg={2} className="d-md-block bg-light sidebar">
+                <Col
+                    md={3}
+                    lg={2}
+                    className="d-md-block bg-light sidebar collapse"
+                >
                     <div className="sidebar-sticky pt-0">
                         <ul className="nav flex-column">
                             <CollapsableMenu

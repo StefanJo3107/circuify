@@ -3,7 +3,16 @@ class Switch extends Element {
         super(3, 2, 2, 2);
         this.inputs = [];
         this.outputs = [new Joint(false, jointType.OUTPUT)];
+        this.name = "";
     }
+
+    setName = (name) => {
+        this.name = name;
+    };
+
+    getName = () => {
+        return this.name;
+    };
 
     show = (pos, cellSize) => {
         this.setColor();

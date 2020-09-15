@@ -56,7 +56,7 @@ export let tabs = ["Main"];
 
 export default class Tabs extends React.Component {
     constructor(props) {
-        super(props);
+        super();
         this.state = { tabs: tabs, currentIndex: 1 };
         sessionStorage.setItem("currentCircuit", "Main");
         sessionStorage.setItem("circuits", tabs);

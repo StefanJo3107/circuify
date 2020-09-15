@@ -3,7 +3,16 @@ class Lightbulb extends Element {
         super(2, 4, 2, 3);
         this.inputs = [new Joint(false, jointType.INPUT)];
         this.outputs = [];
+        this.name = "";
     }
+
+    setName = (name) => {
+        this.name = name;
+    };
+
+    getName = () => {
+        return this.name;
+    };
 
     show = (pos, cellSize) => {
         this.setColor();

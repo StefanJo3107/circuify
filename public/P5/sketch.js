@@ -17,6 +17,7 @@ let placingType = "";
 let circuits = [];
 let currentCircuitIndex = 0;
 
+let canSelect = true;
 let selectedInput = null;
 let selectedOutput = null;
 
@@ -39,6 +40,12 @@ selected = {
 let holder;
 let tabs;
 
+let modal;
+let modalName;
+let modalInput;
+let modalCloseButton;
+let modalIsShown = false;
+
 function setup() {
     holder = document.getElementById("canvasHolder");
     tabs = document.getElementsByClassName("nav-tabs")[0];
@@ -49,12 +56,54 @@ function setup() {
         P2D
     );
     canvas.parent("canvasHolder");
+    getModal();
 
     sessionStorage.setItem("selectedOption", "SELECT");
     sessionStorage.setItem("selectedType", "TOOL");
 
     grid = new Grid(220);
     letterFont = loadFont("../BAHNSCHRIFT.TTF");
+}
+
+function getModal() {
+    modal = document.getElementsByClassName("modal-dialog")[0];
+    modalName = document.getElementsByClassName("modal-title")[0];
+    modalInput = modal.getElementsByClassName("form-control")[0];
+    modalCloseButton = modal.getElementsByClassName("close")[0];
+    modalCloseButton.onclick = () => {
+        hideModal();
+    };
+
+    modal.onmouseover = () => {
+        dragStartPos = null;
+        dragEndPos = null;
+        initialDragPos = null;
+        drag = null;
+        selectionInProgress = false;
+        selectionRectStart = null;
+        selectionRectEnd = null;
+        canSelect = false;
+    };
+    modal.onmouseout = () => {
+        dragStartPos = null;
+        dragEndPos = null;
+        initialDragPos = null;
+        drag = null;
+        selectionInProgress = false;
+        selectionRectStart = null;
+        selectionRectEnd = null;
+        canSelect = true;
+    };
+}
+
+function hideModal() {
+    modal.style.display = "none";
+    modalIsShown = false;
+}
+
+function showModal() {
+    modal.style.display = "block";
+    modalIsShown = true;
 }
 
 function draw() {
@@ -305,6 +354,10 @@ function keyPressed() {
 }
 
 function mousePressed() {
+    if (!canSelect) {
+        return;
+    }
+
     if (mouseButton === LEFT && selectedOption.name.toLowerCase() == "select") {
         let unselectOthers = true;
         let selectedIndex = -1;
@@ -386,6 +439,10 @@ function mousePressed() {
 }
 
 function mouseDragged() {
+    if (!canSelect) {
+        return;
+    }
+
     if (mouseButton === LEFT && selectedOption.name == "SELECT") {
         if (dragStartPos != null) {
             cursor("grab");
@@ -462,6 +519,10 @@ function mouseDragged() {
 }
 
 function mouseReleased() {
+    if (!canSelect) {
+        return;
+    }
+
     if (selectionRectEnd != null && selectionRectStart != null) {
         for (
             let i = 0;

@@ -7,6 +7,8 @@ class Circuit {
         this.switchOutputs = [];
         this.bulbInputs = [];
         this.version = 0;
+        this.namingVersion = 0;
+        this.selectedIndex = -1;
     }
 
     copyCircuit(circuit) {
@@ -101,20 +103,58 @@ class Circuit {
 
         this.showConnectionRemovalInProgress();
 
+        let selectedElements = [];
+
         //showing elements
         if (this.elements != null) {
-            //let icElements = [];
+            for (let i = 0; i < this.elements.length; i++) {
+                this.elements[i].refreshPosition();
+                this.elements[i].show(this.elements[i].getPosition(), cellSize);
+                this.elements[i].calculateOutput();
 
-            for (let element of this.elements) {
-                element.refreshPosition();
-                element.show(element.getPosition(), cellSize);
-                element.calculateOutput();
+                if (this.elements[i].getState() === elementState.Selected) {
+                    selectedElements.push(i);
+                }
             }
         }
+
+        if (
+            selectedElements.length == 1 &&
+            (this.elements[selectedElements[0]].constructor.name === "Switch" ||
+                this.elements[selectedElements[0]].constructor.name ===
+                    "Lightbulb")
+        ) {
+            if (this.selectedIndex != selectedElements[0]) {
+                showModal();
+                modalName.innerHTML =
+                    this.elements[selectedElements[0]].constructor.name ===
+                    "Switch"
+                        ? "Switch"
+                        : "Light Bulb";
+
+                modalInput.value = this.elements[selectedElements[0]].getName();
+                modal.oninput = () => {
+                    this.updateElementName(this.elements[selectedElements[0]]);
+                };
+                this.selectedIndex = selectedElements[0];
+            }
+        } else {
+            if (modalIsShown) {
+                hideModal();
+            }
+
+            this.selectedIndex = -1;
+        }
+    };
+
+    updateElementName = (element) => {
+        element.setName(modalInput.value);
+        this.namingVersion++;
     };
 
     addElement = (element) => {
         this.elements.push(element);
+        element.setElementState(elementState.Selected);
 
         if (element.constructor.name === "Switch") {
             this.switchOutputs.push(element.outputs[0]);
@@ -196,6 +236,8 @@ class Circuit {
             this.usedInputs.push(selectedInput);
             selectedInput = null;
             selectedOutput = null;
+
+            this.version++;
         }
     };
 
@@ -249,6 +291,10 @@ class Circuit {
             selectedInput.resetState();
             selectedInput = null;
             selectedOutput = null;
+
+            if (connToRemove.length != 0) {
+                this.version++;
+            }
         }
     };
 

@@ -2,7 +2,9 @@ class IntegratedCircuit extends Element {
     constructor(circuit) {
         super(5, 1, 3, 1);
         this.inputs = [];
+        this.inputNames = [];
         this.outputs = [];
+        this.outputNames = [];
         this.circuit = null;
         this.workingCircuit = null;
     }
@@ -33,6 +35,13 @@ class IntegratedCircuit extends Element {
             for (let bulb in this.circuit.bulbInputs) {
                 this.outputs.push(new Joint(null, jointType.OUTPUT));
             }
+
+            this.outputNames = [];
+            for (let i = 0; i < this.circuit.elements.length; i++) {
+                if (this.circuit.elements[i].constructor.name === "Lightbulb") {
+                    this.outputNames.push(this.circuit.elements[i].getName());
+                }
+            }
         }
 
         if (this.inputs.length != this.circuit.switchOutputs.length) {
@@ -46,6 +55,32 @@ class IntegratedCircuit extends Element {
             for (let sw in this.circuit.switchOutputs) {
                 this.inputs.push(new Joint(null, jointType.INPUT));
             }
+
+            this.inputNames = [];
+            for (let i = 0; i < this.circuit.elements.length; i++) {
+                if (this.circuit.elements[i].constructor.name === "Switch") {
+                    this.inputNames.push(this.circuit.elements[i].getName());
+                }
+            }
+        }
+
+        if (
+            this.workingCircuit != null &&
+            this.circuit.namingVersion !== this.workingCircuit.namingVersion
+        ) {
+            this.outputNames = [];
+            for (let i = 0; i < this.circuit.elements.length; i++) {
+                if (this.circuit.elements[i].constructor.name === "Lightbulb") {
+                    this.outputNames.push(this.circuit.elements[i].getName());
+                }
+            }
+
+            this.inputNames = [];
+            for (let i = 0; i < this.circuit.elements.length; i++) {
+                if (this.circuit.elements[i].constructor.name === "Switch") {
+                    this.inputNames.push(this.circuit.elements[i].getName());
+                }
+            }
         }
 
         this.entireHeight =
@@ -55,8 +90,26 @@ class IntegratedCircuit extends Element {
                 1,
             ]) + 1;
 
-        this.entireWidth = max(ceil(this.circuit.name.length / 2), 1) + 4;
-        this.elementWidth = max(ceil(this.circuit.name.length / 2), 1) + 2;
+        let maxInputName = 0;
+        for (let i = 0; i < this.inputNames.length; i++) {
+            maxInputName =
+                this.inputNames[i].length > maxInputName
+                    ? this.inputNames[i].length
+                    : maxInputName;
+        }
+        let maxOutputName = 0;
+        for (let i = 0; i < this.outputNames.length; i++) {
+            maxOutputName =
+                this.outputNames[i].length > maxOutputName
+                    ? this.outputNames[i].length
+                    : maxOutputName;
+        }
+
+        this.entireWidth =
+            max(ceil(this.circuit.name.length / 1.6), 1) +
+            2 +
+            max(ceil(maxInputName / 1.2) + ceil(maxOutputName / 1.2), 2);
+        this.elementWidth = this.entireWidth - 2;
 
         for (let i = 0; i < this.inputs.length; i++) {
             this.setColor();
@@ -112,11 +165,37 @@ class IntegratedCircuit extends Element {
         //textFont("Helvetica");
         textFont(letterFont);
         text(
-            this.circuit.name,
+            this.circuit.name.toUpperCase(),
             pos.x + (cellSize * (this.elementWidth + 2)) / 2,
             pos.y + (this.entireHeight / 2) * cellSize + 0.2 * cellSize
         );
+
+        textAlign(LEFT);
+        textSize(cellSize / 1.5);
+        fill(0);
+        strokeWeight(0.5);
+        for (let i = 0; i < this.inputNames.length; i++) {
+            text(
+                this.inputNames[i].toUpperCase(),
+                pos.x + 1.1 * cellSize,
+                pos.y + (i + 1) * cellSize + 0.2 * cellSize
+            );
+        }
         this.setColor();
+
+        textAlign(RIGHT);
+        fill(0);
+        strokeWeight(0.5);
+        for (let i = 0; i < this.outputNames.length; i++) {
+            text(
+                this.outputNames[i].toUpperCase(),
+                pos.x +
+                    cellSize +
+                    this.elementWidth * cellSize -
+                    0.1 * cellSize,
+                pos.y + (i + 1) * cellSize + 0.2 * cellSize
+            );
+        }
 
         textAlign(LEFT);
     };
