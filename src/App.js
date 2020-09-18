@@ -7,12 +7,17 @@ import Navbar from "./Navbar.jsx";
 import Sidebar from "./Sidebar.jsx";
 import Tabs from "./Tabs.jsx";
 import PropertyBox from "./PropertyBox.jsx";
+import TutorialBox from "./TutorialBox.jsx";
 
 class App extends React.Component {
     render() {
         return (
             <>
-                <Navbar />
+                <Navbar
+                    updateState={() => {
+                        this.setState({});
+                    }}
+                ></Navbar>
                 <Sidebar selection={sessionStorage.getItem("selectedOption")} />
 
                 <Container fluid>
@@ -30,6 +35,8 @@ class App extends React.Component {
                     </Row>
                     <PropertyBox />
                 </Container>
+
+                <TutorialBox />
             </>
         );
     }

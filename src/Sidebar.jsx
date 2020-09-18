@@ -122,10 +122,18 @@ export default class Sidebar extends React.Component {
     };
 
     componentDidMount() {
-        this.interval = setInterval(
-            () => this.setState({ refresh: !this.state.refresh }),
-            250
-        );
+        this.interval = setInterval(() => {
+            if (
+                selectedOption.option !==
+                sessionStorage.getItem("selectedOption")
+            ) {
+                selectedOption = {
+                    option: sessionStorage.getItem("selectedOption"),
+                    type: sessionStorage.getItem("selectedType"),
+                };
+                this.setState({ refresh: !this.state.refresh });
+            }
+        }, 100);
     }
 
     componentWillUnmount() {

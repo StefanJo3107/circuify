@@ -7,7 +7,7 @@ export default class PropertyBox extends React.Component {
     render() {
         return (
             <Modal.Dialog className="modalBox">
-                <Modal.Header className="modalHeader">
+                <Modal.Header>
                     <Modal.Title>Name</Modal.Title>
                     <button type="button" className="close">
                         <span aria-hidden="true">×</span>

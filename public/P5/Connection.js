@@ -31,6 +31,17 @@ class Connection {
                 )
             );
         }
+
+        if (paused) {
+            stroke(
+                lerpColor(
+                    color(150, 150, 150),
+                    color(100, 100, 100),
+                    map(sin(sineFactor), -1, 1, 0, 1)
+                )
+            );
+        }
+
         strokeWeight(map(cellSize, minZoom, maxZoom, 2, 6));
         noFill();
         bezier(

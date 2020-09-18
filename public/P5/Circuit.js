@@ -90,7 +90,7 @@ class Circuit {
             for (let connection of this.connections) {
                 if (connection.input.enabled && connection.output.enabled) {
                     connection.show();
-                    connection.updateValues();
+                    if (!paused) connection.updateValues();
                 } else {
                     connectionsToDelete.push(connection);
                 }
@@ -110,7 +110,7 @@ class Circuit {
             for (let i = 0; i < this.elements.length; i++) {
                 this.elements[i].refreshPosition();
                 this.elements[i].show(this.elements[i].getPosition(), cellSize);
-                this.elements[i].calculateOutput();
+                if (!paused) this.elements[i].calculateOutput();
 
                 if (this.elements[i].getState() === elementState.Selected) {
                     selectedElements.push(i);
@@ -154,6 +154,7 @@ class Circuit {
 
     addElement = (element) => {
         this.elements.push(element);
+        unselectAllElements();
         element.setElementState(elementState.Selected);
 
         if (element.constructor.name === "Switch") {

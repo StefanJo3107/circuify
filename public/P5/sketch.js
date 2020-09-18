@@ -8,6 +8,8 @@ let jointID = 0;
 
 let sineFactor = 0;
 
+let paused = false;
+
 let selectedOption;
 
 let placingElement = null;
@@ -60,6 +62,7 @@ function setup() {
 
     sessionStorage.setItem("selectedOption", "SELECT");
     sessionStorage.setItem("selectedType", "TOOL");
+    sessionStorage.setItem("NavCommand", "");
 
     grid = new Grid(220);
     letterFont = loadFont("../BAHNSCHRIFT.TTF");
@@ -114,6 +117,8 @@ function RefreshCanvas() {
     if (height != windowHeight - 50 - tabs.offsetHeight) {
         resizeCanvas(holder.offsetWidth, windowHeight - 50 - tabs.offsetHeight);
     }
+
+    handleNavCommands();
 
     getCircuits();
 
@@ -196,6 +201,80 @@ function RefreshCanvas() {
     sineFactor += 0.1;
 }
 
+function handleNavCommands() {
+    switch (sessionStorage.getItem("NavCommand")) {
+        case "New":
+            circuits = [];
+            circuits.push(new Circuit("Main"));
+
+            cellSize = 22;
+            jointID = 0;
+            sineFactor = 0;
+            paused = false;
+            canSelect = true;
+            selectedInput = null;
+            selectedOutput = null;
+            drag = null;
+            dragStartPos = null;
+            dragEndPos = null;
+            initialDragPos = null;
+            selectionRectStart = null;
+            selectionRectEnd = null;
+            selectionInProgress = false;
+
+            sessionStorage.setItem("NavCommand", "");
+            break;
+        case "Zoom In":
+            cellSize += 1;
+            cellSize = constrain(cellSize, minZoom, maxZoom);
+            sessionStorage.setItem("NavCommand", "");
+            break;
+        case "Zoom Out":
+            cellSize -= 1;
+            cellSize = constrain(cellSize, minZoom, maxZoom);
+            sessionStorage.setItem("NavCommand", "");
+            break;
+        case "Delete Selection":
+            circuits[currentCircuitIndex].deleteSelectedElements();
+            sessionStorage.setItem("NavCommand", "");
+            break;
+        case "Select All":
+            for (
+                let i = 0;
+                i < circuits[currentCircuitIndex].elements.length;
+                i++
+            ) {
+                circuits[currentCircuitIndex].elements[i].setElementState(
+                    elementState.Selected
+                );
+            }
+            sessionStorage.setItem("NavCommand", "");
+            break;
+        case "Select None":
+            unselectAllElements();
+            sessionStorage.setItem("NavCommand", "");
+            break;
+        case "Run Simulation":
+            paused = false;
+            break;
+        case "Pause Simulation":
+            paused = true;
+            break;
+    }
+}
+
+function unselectAllElements() {
+    for (let i = 0; i < circuits[currentCircuitIndex].elements.length; i++) {
+        if (
+            circuits[currentCircuitIndex].elements[i].getState() ===
+            elementState.Selected
+        )
+            circuits[currentCircuitIndex].elements[i].setElementState(
+                elementState.Placed
+            );
+    }
+}
+
 function getCircuits() {
     let circuitsStr = sessionStorage.getItem("circuits");
     let circuitNames = circuitsStr.split(",");
@@ -225,11 +304,17 @@ function getCircuits() {
 
     let currentCircuit = sessionStorage.getItem("currentCircuit");
 
+    let index = currentCircuitIndex;
     for (let i = 0; i < circuits.length; i++) {
         if (circuits[i].name === currentCircuit) {
-            currentCircuitIndex = i;
+            index = i;
             break;
         }
+    }
+
+    if (index != currentCircuitIndex) {
+        currentCircuitIndex = index;
+        unselectAllElements();
     }
 }
 
@@ -358,7 +443,11 @@ function mousePressed() {
         return;
     }
 
-    if (mouseButton === LEFT && selectedOption.name.toLowerCase() == "select") {
+    if (
+        mouseButton === LEFT &&
+        selectedOption.name.toLowerCase() == "select" &&
+        mouseInsideCanvas()
+    ) {
         let unselectOthers = true;
         let selectedIndex = -1;
         //starting in reverse because of drawing order of elements

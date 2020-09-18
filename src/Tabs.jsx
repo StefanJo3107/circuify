@@ -57,7 +57,6 @@ export let tabs = ["Main"];
 export default class Tabs extends React.Component {
     constructor(props) {
         super();
-        this.state = { tabs: tabs, currentIndex: 1 };
         sessionStorage.setItem("currentCircuit", "Main");
         sessionStorage.setItem("circuits", tabs);
     }
@@ -78,7 +77,7 @@ export default class Tabs extends React.Component {
             circuitName.length <= 20
         ) {
             tabs.push(circuitName);
-            this.setState({ tabs: tabs });
+            this.setState({});
             this.setActive(tabs[tabs.length - 1]);
             sessionStorage.setItem("circuits", tabs);
 
@@ -94,12 +93,6 @@ export default class Tabs extends React.Component {
                 "Circuit creation aborted because name must be less than 21 characters long!"
             );
         }
-        // tabs.push("Circuit " + this.state.currentIndex);
-        // this.setState({ tabs: tabs });
-        // this.setActive(tabs[tabs.length - 1]);
-
-        // this.setState({ currentIndex: this.state.currentIndex + 1 });
-        // sessionStorage.setItem("circuits", tabs);
     }
 
     RemoveTab(index) {
@@ -109,7 +102,7 @@ export default class Tabs extends React.Component {
 
         if (conf === true) {
             tabs.splice(index, 1);
-            this.setState({ tabs: tabs });
+            this.setState({});
             if (tabs.length > index) {
                 this.setActive(tabs[index]);
             } else {
@@ -123,6 +116,11 @@ export default class Tabs extends React.Component {
     }
 
     render() {
+        if (sessionStorage.getItem("NavCommand") === "New") {
+            tabs = ["Main"];
+            sessionStorage.setItem("currentCircuit", "Main");
+            sessionStorage.setItem("circuits", tabs);
+        }
         return (
             <Nav className="nav-tabs">
                 <Tab
@@ -137,7 +135,7 @@ export default class Tabs extends React.Component {
                     showClose={false}
                     onDelete={() => this.RemoveTab(0)}
                 />
-                {this.state.tabs.map((name, index) =>
+                {tabs.map((name, index) =>
                     name !== "Main" ? (
                         <Tab
                             key={index}

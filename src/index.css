@@ -135,13 +135,13 @@ canvas {
                                   supported by Chrome, Edge, Opera and Firefox */
 }
 
-.modalHeader {
+.modal-header {
     background-color: #343a40;
     border-bottom: 1px black;
     color: white;
 }
 
-.modalHeader > .close {
+.modal-header > .close {
     color: white !important;
     opacity: 1 !important;
     font-weight: 1 !important;
@@ -155,6 +155,45 @@ canvas {
     border: 1px solid #ced4da !important;
     box-shadow: none !important;
     outline: none !important;
+}
+
+.modal-60w {
+    max-width: 100% !important;
+    width: 60% !important;
+}
+
+.modal-60w > .modal-content {
+    border: none !important;
+}
+
+.tutorial-content {
+    font-size: 1.1rem;
+}
+
+.tutorial-list {
+    padding-left: 30px;
+}
+
+.page-number {
+    flex: auto;
+}
+
+.tutorial-list li {
+    background: url("https://api.iconify.design/uil:circuit.svg?height=24")
+        no-repeat transparent;
+    background-position: 0px 0px;
+    list-style-type: none;
+    margin: 0;
+    padding: 0px 0px 5px 30px;
+    vertical-align: middle;
+}
+
+.tutorial-content p {
+    margin-bottom: 0.5rem;
+}
+
+.tutorial-content img {
+    border-radius: 0.5rem;
 }
 
 ::-webkit-scrollbar {
