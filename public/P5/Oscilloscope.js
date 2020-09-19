@@ -1,4 +1,4 @@
-class Oscilloscope extends Element {
+class Oscope extends Element {
     constructor() {
         super(6, 4, 6, 3);
         this.inputs = [new Joint(false, jointType.INPUT)];

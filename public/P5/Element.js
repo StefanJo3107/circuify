@@ -83,11 +83,28 @@ class Element {
     };
 
     checkSelectionInsideRect = (rectStart, rectEnd) => {
+        // if (
+        //     this.position.x >= min(rectStart.x, rectEnd.x) &&
+        //     this.position.x <= max(rectStart.x, rectEnd.x) &&
+        //     this.position.y >= min(rectStart.y, rectEnd.y) &&
+        //     this.position.y <= max(rectStart.y, rectEnd.y)
+        // )
+        // alert(
+        //     (this.position.x < max(rectStart.x, rectEnd.x) &&
+        //         this.position.x + this.entireWidth * cellSize >
+        //             min(rectStart.x, rectEnd.x)) +
+        //         " " +
+        //         (this.position.y < max(rectStart.y, rectEnd.y) &&
+        //             this.position.y + this.elementHeight >
+        //                 min(rectStart.y, rectEnd.y))
+        // );
         if (
-            this.position.x >= min(rectStart.x, rectEnd.x) &&
-            this.position.x <= max(rectStart.x, rectEnd.x) &&
-            this.position.y >= min(rectStart.y, rectEnd.y) &&
-            this.position.y <= max(rectStart.y, rectEnd.y)
+            this.position.x < max(rectStart.x, rectEnd.x) &&
+            this.position.x + this.entireWidth * cellSize >
+                min(rectStart.x, rectEnd.x) &&
+            this.position.y < max(rectStart.y, rectEnd.y) &&
+            this.position.y + this.entireHeight * cellSize >
+                min(rectStart.y, rectEnd.y)
         ) {
             this.state = elementState.Selected;
             return true;

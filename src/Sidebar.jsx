@@ -228,8 +228,12 @@ export default class Sidebar extends React.Component {
                 name: "HEX DIGIT",
             },
             {
+                image: "../Images/SevenSegment.png",
+                name: "SEVEN SEGMENT",
+            },
+            {
                 image: "../Images/Oscilloscope.png",
-                name: "OSCILLOSCOPE",
+                name: "O-SCOPE",
             },
         ];
 

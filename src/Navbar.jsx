@@ -113,6 +113,18 @@ export default class Navbar extends React.Component {
         );
     }
 
+    Tutorial() {
+        navProps.setTutorialShow(true);
+        navProps.setTutorialPage(-1);
+        navProps.updateState();
+    }
+
+    About() {
+        navProps.setTutorialShow(true);
+        navProps.setTutorialPage(0);
+        navProps.updateState();
+    }
+
     render() {
         const fileOptions = [
             {
@@ -169,9 +181,11 @@ export default class Navbar extends React.Component {
             },
             {
                 name: "Tutorial",
+                action: this.Tutorial,
             },
             {
                 name: "About",
+                action: this.About,
             },
         ];
         return (

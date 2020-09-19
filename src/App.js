@@ -9,7 +9,24 @@ import Tabs from "./Tabs.jsx";
 import PropertyBox from "./PropertyBox.jsx";
 import TutorialBox from "./TutorialBox.jsx";
 
+let tutorialShow = { show: true };
+let tutorialPages = { pageToShow: -1 };
 class App extends React.Component {
+    constructor(props) {
+        super();
+        if (localStorage.getItem("tutorialShown") === "true") {
+            this.showTutorial(false);
+        }
+    }
+
+    showTutorial(state) {
+        tutorialShow.show = state;
+    }
+
+    setTutorialPage(page) {
+        tutorialPages.pageToShow = page;
+    }
+
     render() {
         return (
             <>
@@ -17,6 +34,8 @@ class App extends React.Component {
                     updateState={() => {
                         this.setState({});
                     }}
+                    setTutorialShow={this.showTutorial}
+                    setTutorialPage={this.setTutorialPage}
                 ></Navbar>
                 <Sidebar selection={sessionStorage.getItem("selectedOption")} />
 
@@ -36,7 +55,11 @@ class App extends React.Component {
                     <PropertyBox />
                 </Container>
 
-                <TutorialBox />
+                <TutorialBox
+                    tutorialShow={tutorialShow}
+                    setShow={this.showTutorial}
+                    pages={tutorialPages}
+                />
             </>
         );
     }

@@ -177,7 +177,7 @@ class IntegratedCircuit extends Element {
         for (let i = 0; i < this.inputNames.length; i++) {
             text(
                 this.inputNames[i].toUpperCase(),
-                pos.x + 1.1 * cellSize,
+                pos.x + 1.15 * cellSize,
                 pos.y + (i + 1) * cellSize + 0.2 * cellSize
             );
         }
@@ -190,7 +190,7 @@ class IntegratedCircuit extends Element {
             text(
                 this.outputNames[i].toUpperCase(),
                 pos.x +
-                    cellSize +
+                    0.95 * cellSize +
                     this.elementWidth * cellSize -
                     0.1 * cellSize,
                 pos.y + (i + 1) * cellSize + 0.2 * cellSize

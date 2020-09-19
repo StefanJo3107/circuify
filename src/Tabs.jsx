@@ -20,7 +20,10 @@ function Tab(props) {
                     " " +
                     (props.content === "Main" ? "px-4 ml-2" : "")
                 }
-                onClick={props.onClick}
+                onClick={() => {
+                    props.onClick();
+                    obj.props.updateState();
+                }}
             >
                 {props.content}
                 <Button
@@ -30,7 +33,10 @@ function Tab(props) {
                         " " +
                         (!props.showClose ? "d-none" : "")
                     }
-                    onClick={props.onDelete}
+                    onClick={() => {
+                        props.onDelete();
+                        obj.props.updateState();
+                    }}
                 >
                     <Icon icon={xIcon} />
                 </Button>
@@ -44,7 +50,10 @@ function AddTab(props) {
         <NavItem>
             <div
                 className={"plus-btn btn-dark tab-link nav-link"}
-                onClick={props.onClick}
+                onClick={() => {
+                    props.onClick();
+                    obj.props.updateState();
+                }}
             >
                 <Icon icon={plusSquareOutlined} width="25" />
             </div>
@@ -53,12 +62,14 @@ function AddTab(props) {
 }
 
 export let tabs = ["Main"];
+let obj;
 
 export default class Tabs extends React.Component {
     constructor(props) {
         super();
         sessionStorage.setItem("currentCircuit", "Main");
         sessionStorage.setItem("circuits", tabs);
+        obj = this;
     }
 
     setActive(name) {
