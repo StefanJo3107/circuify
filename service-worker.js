@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/circuify-logic-circuit-visualization/precache-manifest.4f9d789c60480eac6266ab525b71615f.js"
+  "/circuify-logic-circuit-visualization/precache-manifest.1193948b10d31b0f56bc2c4338e53017.js"
 );
 
 self.addEventListener('message', (event) => {

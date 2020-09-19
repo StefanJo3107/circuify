@@ -65,7 +65,7 @@ function setup() {
     sessionStorage.setItem("NavCommand", "");
 
     grid = new Grid(220);
-    letterFont = loadFont("../BAHNSCHRIFT.TTF");
+    letterFont = loadFont("./BAHNSCHRIFT.TTF");
 }
 
 function getModal() {
