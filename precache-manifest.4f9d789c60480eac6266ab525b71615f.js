@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "706ebda4d628ca6a1e5c214d8caf4968",
+    "revision": "857cc28fb39d633ac37d59074802c57e",
     "url": "/circuify-logic-circuit-visualization/index.html"
   },
   {
-    "revision": "39964b0d157a4c61a9b8",
+    "revision": "66711a5defa05d72df30",
     "url": "/circuify-logic-circuit-visualization/static/css/main.010f353b.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/circuify-logic-circuit-visualization/static/js/2.aaef5698.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "39964b0d157a4c61a9b8",
-    "url": "/circuify-logic-circuit-visualization/static/js/main.b0f63158.chunk.js"
+    "revision": "66711a5defa05d72df30",
+    "url": "/circuify-logic-circuit-visualization/static/js/main.4e9e8f46.chunk.js"
   },
   {
     "revision": "5fff1767dcf50b83694e",
