@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/circuify-logic-circuit-visualization/static/css/main.010f353b.chunk.css",
+    "main.js": "/circuify-logic-circuit-visualization/static/js/main.b0f63158.chunk.js",
+    "main.js.map": "/circuify-logic-circuit-visualization/static/js/main.b0f63158.chunk.js.map",
+    "runtime-main.js": "/circuify-logic-circuit-visualization/static/js/runtime-main.2de443d6.js",
+    "runtime-main.js.map": "/circuify-logic-circuit-visualization/static/js/runtime-main.2de443d6.js.map",
+    "static/js/2.aaef5698.chunk.js": "/circuify-logic-circuit-visualization/static/js/2.aaef5698.chunk.js",
+    "static/js/2.aaef5698.chunk.js.map": "/circuify-logic-circuit-visualization/static/js/2.aaef5698.chunk.js.map",
+    "index.html": "/circuify-logic-circuit-visualization/index.html",
+    "precache-manifest.41995db73407a477f0f403da6fb68f8b.js": "/circuify-logic-circuit-visualization/precache-manifest.41995db73407a477f0f403da6fb68f8b.js",
+    "service-worker.js": "/circuify-logic-circuit-visualization/service-worker.js",
+    "static/css/main.010f353b.chunk.css.map": "/circuify-logic-circuit-visualization/static/css/main.010f353b.chunk.css.map",
+    "static/js/2.aaef5698.chunk.js.LICENSE.txt": "/circuify-logic-circuit-visualization/static/js/2.aaef5698.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.2de443d6.js",
+    "static/js/2.aaef5698.chunk.js",
+    "static/css/main.010f353b.chunk.css",
+    "static/js/main.b0f63158.chunk.js"
+  ]
+}
