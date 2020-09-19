@@ -143,34 +143,34 @@ export default class Sidebar extends React.Component {
     render() {
         const tools = [
             {
-                image: "../Images/Cursor.png",
+                image: "./Images/Cursor.png",
                 name: "SELECT",
             },
             {
-                image: "../Images/DeleteWire.png",
+                image: "./Images/DeleteWire.png",
                 name: "REMOVE WIRE",
             },
         ];
 
         const inputs = [
             {
-                image: "../Images/True.png",
+                image: "./Images/True.png",
                 name: "TRUE",
             },
             {
-                image: "../Images/False.png",
+                image: "./Images/False.png",
                 name: "FALSE",
             },
             {
-                image: "../Images/Clock.png",
+                image: "./Images/Clock.png",
                 name: "CLOCK",
             },
             {
-                image: "../Images/Button.png",
+                image: "./Images/Button.png",
                 name: "BUTTON",
             },
             {
-                image: "../Images/Switch.png",
+                image: "./Images/Switch.png",
                 name: "SWITCH",
             },
         ];
@@ -220,49 +220,49 @@ export default class Sidebar extends React.Component {
 
         const outputs = [
             {
-                image: "../Images/Lightbulb.png",
+                image: "./Images/Lightbulb.png",
                 name: "LIGHT BULB",
             },
             {
-                image: "../Images/Hexdigit02.png",
+                image: "./Images/Hexdigit02.png",
                 name: "HEX DIGIT",
             },
             {
-                image: "../Images/SevenSegment.png",
+                image: "./Images/SevenSegment.png",
                 name: "SEVEN SEGMENT",
             },
             {
-                image: "../Images/Oscilloscope.png",
+                image: "./Images/Oscilloscope.png",
                 name: "O-SCOPE",
             },
         ];
 
         const flipflops = [
             {
-                image: "../Images/SRFlip-Flop.png",
+                image: "./Images/SRFlip-Flop.png",
                 name: "SR FLIP-FLOP",
             },
             {
-                image: "../Images/DFlip-Flop.png",
+                image: "./Images/DFlip-Flop.png",
                 name: "D FLIP-FLOP",
             },
             {
-                image: "../Images/JKFlip-Flop.png",
+                image: "./Images/JKFlip-Flop.png",
                 name: "JK FLIP-FLOP",
             },
             {
-                image: "../Images/TFlip-Flop.png",
+                image: "./Images/TFlip-Flop.png",
                 name: "T FLIP-FLOP",
             },
         ];
 
         const plexers = [
             {
-                image: "../Images/Multiplexer.png",
+                image: "./Images/Multiplexer.png",
                 name: "MUX",
             },
             {
-                image: "../Images/Demultiplexer.png",
+                image: "./Images/Demultiplexer.png",
                 name: "DEMUX",
             },
         ];
@@ -272,7 +272,7 @@ export default class Sidebar extends React.Component {
         for (let i = 1; i < tabs.length; i++) {
             if (tabs[i] !== currentCircuit) {
                 circuits.push({
-                    image: "../Images/IntegratedCircuit.png",
+                    image: "./Images/IntegratedCircuit.png",
                     name: tabs[i],
                 });
             }
