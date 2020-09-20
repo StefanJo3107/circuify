@@ -97,9 +97,7 @@ class Circuit {
             }
         }
 
-        _.remove(this.connections, (conn) => {
-            _.includes(connectionsToDelete, conn);
-        });
+        this.removeConnections(connectionsToDelete);
 
         this.showConnectionRemovalInProgress();
 
@@ -346,6 +344,23 @@ class Circuit {
                 return true;
             }
 
+            return false;
+        });
+
+        _.remove(this.usedInputs, (inp) => {
+            return _.includes(deletedInputs, inp);
+        });
+    }
+
+    removeConnections(connToRemove) {
+        let deletedInputs = [];
+
+        _.remove(this.connections, (conn) => {
+            if (_.includes(connToRemove, conn)) {
+                conn.input.resetState();
+                deletedInputs.push(conn.input);
+                return true;
+            }
             return false;
         });
 
