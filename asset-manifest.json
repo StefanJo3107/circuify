@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/circuify-logic-circuit-visualization/static/css/main.010f353b.chunk.css",
-    "main.js": "/circuify-logic-circuit-visualization/static/js/main.9c6ef1c0.chunk.js",
-    "main.js.map": "/circuify-logic-circuit-visualization/static/js/main.9c6ef1c0.chunk.js.map",
-    "runtime-main.js": "/circuify-logic-circuit-visualization/static/js/runtime-main.2de443d6.js",
-    "runtime-main.js.map": "/circuify-logic-circuit-visualization/static/js/runtime-main.2de443d6.js.map",
-    "static/js/2.aaef5698.chunk.js": "/circuify-logic-circuit-visualization/static/js/2.aaef5698.chunk.js",
-    "static/js/2.aaef5698.chunk.js.map": "/circuify-logic-circuit-visualization/static/js/2.aaef5698.chunk.js.map",
-    "index.html": "/circuify-logic-circuit-visualization/index.html",
-    "precache-manifest.1193948b10d31b0f56bc2c4338e53017.js": "/circuify-logic-circuit-visualization/precache-manifest.1193948b10d31b0f56bc2c4338e53017.js",
-    "service-worker.js": "/circuify-logic-circuit-visualization/service-worker.js",
-    "static/css/main.010f353b.chunk.css.map": "/circuify-logic-circuit-visualization/static/css/main.010f353b.chunk.css.map",
-    "static/js/2.aaef5698.chunk.js.LICENSE.txt": "/circuify-logic-circuit-visualization/static/js/2.aaef5698.chunk.js.LICENSE.txt"
+    "main.css": "/circuify/static/css/main.010f353b.chunk.css",
+    "main.js": "/circuify/static/js/main.8f128217.chunk.js",
+    "main.js.map": "/circuify/static/js/main.8f128217.chunk.js.map",
+    "runtime-main.js": "/circuify/static/js/runtime-main.7da8d5b7.js",
+    "runtime-main.js.map": "/circuify/static/js/runtime-main.7da8d5b7.js.map",
+    "static/js/2.aaef5698.chunk.js": "/circuify/static/js/2.aaef5698.chunk.js",
+    "static/js/2.aaef5698.chunk.js.map": "/circuify/static/js/2.aaef5698.chunk.js.map",
+    "index.html": "/circuify/index.html",
+    "precache-manifest.97b32207b4f4b74b2c3be8d9fdd5517f.js": "/circuify/precache-manifest.97b32207b4f4b74b2c3be8d9fdd5517f.js",
+    "service-worker.js": "/circuify/service-worker.js",
+    "static/css/main.010f353b.chunk.css.map": "/circuify/static/css/main.010f353b.chunk.css.map",
+    "static/js/2.aaef5698.chunk.js.LICENSE.txt": "/circuify/static/js/2.aaef5698.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.2de443d6.js",
+    "static/js/runtime-main.7da8d5b7.js",
     "static/js/2.aaef5698.chunk.js",
     "static/css/main.010f353b.chunk.css",
-    "static/js/main.9c6ef1c0.chunk.js"
+    "static/js/main.8f128217.chunk.js"
   ]
 }
