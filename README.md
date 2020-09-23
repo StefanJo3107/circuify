@@ -1,68 +1,53 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![Banner](https://i.imgur.com/xN6PI0K.png)
+<h1 align="center">Circuify - Logic Circuit Visualizer</h1>
+<p align="center"><strong>Circuify - Logic Circuit Visualizer is free, open-source tool for building and visualizing logic circuits.
+<br>
+Made for <a href="https://www.algoexpert.io/">AlgoExpert</a> SWE Project Contest Summer-Fall 2020</strong>
+<h3 align="center"><a href="https://stefanjo3107.github.io/circuify-logic-circuit-visualization/"><strong>Try it out!</strong></h3></a>
+</p>
+<h2>Features:</h2>
+<ul>
+<li>Design logic circuits with <strong>intuitive and easy to use user interface</strong></li>
+<li>Great range of different <strong>logic gates, inputs, outputs...</strong></li> 
+<li>Support for <strong>making custom integrated circuits</strong> for easier project organization and endless creation possibilities</li> 
+<li>And more to explore...</li>
+</ul>
+<h2>Showcase video: https://youtu.be/KClIbmGpCb0</h2>
+<h2>Visuals:</h2>
+<p align="center">
+  <img src="https://media.giphy.com/media/cE1INJBJFxm1SzoXsi/giphy.gif" />
+  <img src="https://media.giphy.com/media/gURDsh2146qvYV7kpu/giphy.gif" />
+</p>
+<details>
+<summary>More GIFs</summary>
+<br/>
+<p align="center">
+  <img src="https://media.giphy.com/media/b0OWAT0YnMTcKVOQz1/giphy.gif" />
+  <img src="https://media.giphy.com/media/r3zWPFP4QiXInAvtbR/giphy.gif" />
+  <img src="https://media.giphy.com/media/dMNov7KF4OQWJ9mZAq/giphy.gif" />
+  <img src="https://media.giphy.com/media/FdeEehvZk9UPIrAkBp/giphy.gif" />
+  <img src="https://media.giphy.com/media/onm8g80VMKK2DVR0Kz/giphy.gif" />
+  <img src="https://media.giphy.com/media/450VicCW2HpxhAmkLc/giphy.gif" />
+  <img src="https://media.giphy.com/media/f5DIy9Udpa1rFVJ33O/giphy.gif" />
+  <img src="https://media.giphy.com/media/Oh7uxxaSfYAORnzSXU/giphy.gif" />
+</p>
+</details>
+<h2>Technologies used:</h2>
+<ul>
+  <li><a href="https://p5js.org/">P5.js</a></li>
+  <li><a href="https://reactjs.org/">React</a></li>
+  <li><a href="https://react-bootstrap.github.io/">React Bootstrap</a></li>
+  <li><a href="https://iconify.design/icon-sets/>Iconify</a></li>
+  <li><a href="https://code.visualstudio.com/>Visual Studio Code</a></li>
+</ul>
+<hr>
+<p>
+Made by Stefan Jovanović!
+<br>
+Twitter: https://twitter.com/SJovGD
+<br>
+Reddit: https://www.reddit.com/user/sjovanovic3107
+<br>
+Support me on Ko-Fi: https://ko-fi.com/stefanjo
+</p>
 
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
