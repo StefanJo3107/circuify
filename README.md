@@ -3,7 +3,7 @@
 <p align="center"><strong>Circuify - Logic Circuit Visualizer is free, open-source tool for building and visualizing logic circuits.
 <br>
 Made for <a href="https://www.algoexpert.io/">AlgoExpert</a> SWE Project Contest Summer-Fall 2020</strong>
-<h3 align="center"><a href="stefanjo3107.github.io/circuify"><strong>Try it out!</strong></h3></a>
+<h3 align="center"><a href="https://stefanjo3107.github.io/circuify"><strong>Try it out!</strong></h3></a>
 </p>
 <h2>Features:</h2>
 <ul>
